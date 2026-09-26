@@ -1,0 +1,36 @@
+{% extends "core/base_interna.html" %}
+{% block title %}{{ projeto.titulo }} | Danilo Oliveira{% endblock %}
+{% block breadcrumb %}{{ projeto.titulo }}{% endblock %}
+{% block pagina %}
+<header class="p3-heading p4-detail-heading">
+    <a class="p3-text-link p4-back" href="{% url 'portfolio:projetos' %}"><span aria-hidden="true">←</span> Todos os projetos</a>
+    <p class="p3-eyebrow">{{ projeto.categoria|default:"Projeto pessoal" }}</p>
+    <h1>{{ projeto.titulo }}</h1>
+    <p class="p3-lead">{{ projeto.resumo }}</p>
+</header>
+<div class="p4-detail-cover">{% include "portfolio/partials/capa.html" with detalhe=True %}</div>
+<div class="p4-detail-layout">
+    <article class="p4-narrative">
+        <section><p class="p3-eyebrow">Visão geral</p><h2>Sobre o projeto</h2><div class="p4-prose">{{ projeto.descricao|linebreaks }}</div></section>
+        {% if projeto.desafio %}<section><h2>O desafio</h2><div class="p4-prose">{{ projeto.desafio|linebreaks }}</div></section>{% endif %}
+        {% if projeto.solucao %}<section><h2>Minha contribuição</h2><div class="p4-prose">{{ projeto.solucao|linebreaks }}</div></section>{% endif %}
+        {% if projeto.aprendizados %}<section><h2>Aprendizados e próximos passos</h2><div class="p4-prose">{{ projeto.aprendizados|linebreaks }}</div></section>{% endif %}
+    </article>
+    <aside class="p3-card p4-facts" aria-label="Informações do projeto">
+        <p class="p3-eyebrow">Ficha do projeto</p>
+        <h2>Informações</h2>
+        <dl><dt>Status</dt><dd>{{ projeto.get_status_display }}</dd>{% if projeto.categoria %}<dt>Categoria</dt><dd>{{ projeto.categoria }}</dd>{% endif %}</dl>
+        {% if projeto.tecnologias.all %}
+        <h3>Tecnologias utilizadas</h3>
+        <ul class="p3-tags">{% for tecnologia in projeto.tecnologias.all %}<li>{{ tecnologia.nome }}</li>{% endfor %}</ul>
+        {% endif %}
+        {% if projeto.link_site or projeto.link_repositorio %}
+        <div class="p4-external-links">
+            {% if projeto.link_site %}<a class="p3-button" href="{{ projeto.link_site }}">Acessar projeto <span aria-hidden="true">↗</span></a>{% endif %}
+            {% if projeto.link_repositorio %}<a class="p3-button p4-button-outline" href="{{ projeto.link_repositorio }}">Ver repositório <span aria-hidden="true">↗</span></a>{% endif %}
+        </div>
+        {% endif %}
+    </aside>
+</div>
+{% include "partials/cta_interna.html" %}
+{% endblock %}

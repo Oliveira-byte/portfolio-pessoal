@@ -1,0 +1,17 @@
+{% if projeto.capa %}
+<div class="p4-cover-photo">
+    <img src="{{ projeto.capa.url }}" alt="{{ projeto.capa_alt|default:projeto.titulo }}" {% if not detalhe %}loading="lazy"{% endif %} decoding="async" width="1200" height="700">
+</div>
+{% elif projeto.capa_estilo == 'atlas' %}
+<div class="p3-project-cover p3-cover-atlas">
+    <span class="p3-cover-top">{{ projeto.categoria|default:"Projeto pessoal" }}</span>
+    <div class="p3-atlas-mark"><span aria-hidden="true">◇</span><strong>ATLAS</strong><small>SEMI-JOIAS</small></div>
+    <span class="p3-cover-bottom">{{ projeto.titulo }}</span>
+</div>
+{% else %}
+<div class="p3-project-cover p3-cover-portfolio">
+    <span class="p3-cover-top">{{ projeto.categoria|default:"Projeto pessoal" }}</span>
+    <div class="p3-portfolio-mark"><span aria-hidden="true">DO<span>↗</span></span><strong>{{ projeto.titulo }}</strong></div>
+    <span class="p3-cover-bottom">Danilo Oliveira · Engenharia de Software</span>
+</div>
+{% endif %}
