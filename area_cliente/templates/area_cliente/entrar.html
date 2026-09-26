@@ -6,14 +6,14 @@
     <section class="p5-welcome" aria-labelledby="p5-login-title">
         <p class="p3-eyebrow">Área do cliente</p>
         <h1 id="p5-login-title">Seu acesso.<br>Seu espaço.</h1>
-        <p>Entre para acessar sua conta e gerenciar sua senha.</p>
+        <p>Acompanhe seus projetos e serviços, consulte prazos e veja as últimas atualizações.</p>
         <div class="p5-signature"><span aria-hidden="true">DO ↗</span><strong>Danilo Oliveira</strong><span>Tecnologia e soluções digitais.</span></div>
     </section>
     <section class="p3-card p5-auth-card" aria-labelledby="p5-form-title">
         {% if request.user.is_authenticated %}
         <p class="p3-eyebrow">Sessão ativa</p><h2 id="p5-form-title">Você já está conectado.</h2>
         <p>Continue para sua conta ou saia para utilizar outro acesso.</p>
-        <a class="p3-button p5-full" href="{% url 'area_cliente:painel' %}">Ir para minha conta <span aria-hidden="true">→</span></a>
+        <a class="p3-button p5-full" href="{% url 'area_cliente:painel' %}">Ver andamento das solicitações <span aria-hidden="true">→</span></a>
         <form method="post" action="{% url 'area_cliente:sair' %}" class="p5-logout">{% csrf_token %}<button class="p5-link-button" type="submit">Sair desta conta</button></form>
         {% else %}
         <p class="p3-eyebrow">Bem-vindo</p><h2 id="p5-form-title">Entre na sua conta</h2>

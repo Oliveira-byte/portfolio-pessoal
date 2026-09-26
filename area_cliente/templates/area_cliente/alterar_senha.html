@@ -3,7 +3,7 @@
 {% block breadcrumb %}Alterar senha{% endblock %}
 {% block pagina %}
 <div class="p5-password-layout">
-    <header class="p3-heading"><a class="p3-text-link p5-back" href="{% url 'area_cliente:painel' %}"><span aria-hidden="true">←</span> Minha conta</a><p class="p3-eyebrow">Gerenciar acesso</p><h1>Uma nova senha<br>para sua conta.</h1><p class="p3-lead">Confirme sua senha atual e informe a nova senha nos dois campos.</p></header>
+    <header class="p3-heading"><a class="p3-text-link p5-back" href="{% url 'area_cliente:minha_conta' %}"><span aria-hidden="true">←</span> Minha conta</a><p class="p3-eyebrow">Gerenciar acesso</p><h1>Uma nova senha<br>para sua conta.</h1><p class="p3-lead">Confirme sua senha atual e informe a nova senha nos dois campos.</p></header>
     <section class="p3-card p5-auth-card" aria-label="Formulário de alteração de senha"><form method="post" action="{% url 'area_cliente:alterar_senha' %}">{% csrf_token %}{% include "area_cliente/partials/campos_form.html" %}<button class="p3-button p5-full" type="submit">Salvar nova senha <span aria-hidden="true">→</span></button></form></section>
 </div>
 {% endblock %}

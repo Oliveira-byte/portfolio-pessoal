@@ -1,0 +1,4 @@
+<nav class="p6-nav" aria-label="Área do cliente">
+<a href="{% url 'area_cliente:painel' %}" {% if request.resolver_match.url_name == 'painel' or request.resolver_match.url_name == 'solicitacao_detalhe' %}aria-current="page"{% endif %}>Andamento das solicitações</a>
+<a href="{% url 'area_cliente:minha_conta' %}" {% if request.resolver_match.url_name == 'minha_conta' %}aria-current="page"{% endif %}>Minha conta</a>
+</nav>

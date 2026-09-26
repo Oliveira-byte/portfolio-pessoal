@@ -34,7 +34,7 @@ class AreaClienteTests(TestCase):
         })
 
     def test_visitante_e_encaminhado_ao_login(self):
-        for nome in ["painel", "alterar_senha", "senha_alterada"]:
+        for nome in ["painel", "minha_conta", "alterar_senha", "senha_alterada"]:
             with self.subTest(nome=nome):
                 response = self.client.get(reverse(f"area_cliente:{nome}"))
                 self.assertEqual(response.status_code, 302)
@@ -67,14 +67,14 @@ class AreaClienteTests(TestCase):
                 response = self.entrar(client=client, next=destino)
                 self.assertRedirects(response, reverse("area_cliente:painel"))
 
-    def test_painel_mostra_apenas_usuario_logado(self):
+    def test_minha_conta_mostra_apenas_usuario_logado(self):
         self.client.force_login(self.usuario)
-        response = self.client.get(reverse("area_cliente:painel"), {"user_id": self.outro.pk})
+        response = self.client.get(reverse("area_cliente:minha_conta"), {"user_id": self.outro.pk})
         self.assertContains(response, self.usuario.get_username())
         self.assertNotContains(response, self.outro.email)
         self.assertIn("no-store", response.headers["Cache-Control"])
         self.client.force_login(self.outro)
-        response = self.client.get(reverse("area_cliente:painel"))
+        response = self.client.get(reverse("area_cliente:minha_conta"))
         self.assertContains(response, self.outro.get_username())
         self.assertNotContains(response, self.usuario.email)
 
