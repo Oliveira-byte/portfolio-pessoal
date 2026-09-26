@@ -1,3 +1,4 @@
+import errno
 import tempfile
 from pathlib import Path
 
@@ -196,13 +197,11 @@ class ArquivosTests(TestCase):
             arquivo.save()
 
 
-    def test_pastas_publicas_rejeitadas_inclusive_alias_simbolico(self):
+    def test_pastas_publicas_rejeitadas(self):
         with tempfile.TemporaryDirectory() as root:
             publico = Path(root) / "publico"
             publico.mkdir()
-            alias = Path(root) / "alias"
-            alias.symlink_to(publico, target_is_directory=True)
-            for pasta in (publico, publico / "anexos", alias / "anexos"):
+            for pasta in (publico, publico / "anexos"):
                 with override_settings(PRIVATE_FILES_ROOT=pasta, MEDIA_ROOT=publico):
                     with self.assertRaises(ImproperlyConfigured):
                         private_root()
@@ -210,6 +209,25 @@ class ArquivosTests(TestCase):
             with override_settings(PRIVATE_FILES_ROOT=publico / "anexos", STATICFILES_DIRS=[("prefixo", publico)]):
                 self.assertEqual(check_private_storage(None)[0].id, "clientes.E001")
 
+    def test_alias_simbolico_para_pasta_publica_rejeitado(self):
+        with tempfile.TemporaryDirectory() as root:
+            publico = Path(root) / "publico"
+            publico.mkdir()
+            alias = Path(root) / "alias"
+            try:
+                alias.symlink_to(publico, target_is_directory=True)
+            except NotImplementedError:
+                self.skipTest("O sistema não oferece suporte a links simbólicos.")
+            except OSError as exc:
+                if getattr(exc, "winerror", None) == 1314 or exc.errno in (
+                    errno.EPERM, errno.EACCES, errno.ENOSYS, errno.ENOTSUP,
+                ):
+                    self.skipTest("Link simbólico indisponível sem privilégios adicionais neste sistema.")
+                raise
+            with override_settings(PRIVATE_FILES_ROOT=alias / "anexos", MEDIA_ROOT=publico):
+                with self.assertRaises(ImproperlyConfigured):
+                    private_root()
+                self.assertEqual(check_private_storage(None)[0].id, "clientes.E001")
 
     def test_isolamento_de_upload_e_csrf(self):
         for projeto in (self.oculta, self.alheia):
@@ -225,7 +243,6 @@ class ArquivosTests(TestCase):
     def test_interface_vazia_paginacao_e_texto_escapado(self):
         response = self.client.get(self.projeto.get_absolute_url())
         self.assertContains(response, "Seus arquivos ficarão aqui.")
-        self.assertNotContains(response, 'id="mensagens"')
         self.arquivo(titulo="Arquivo oculto", visivel_cliente=False)
         self.arquivo(titulo="Documento alheio", solicitacao=self.alheia)
         for i in range(11):

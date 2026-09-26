@@ -1,20 +1,24 @@
 {% extends "core/base_interna.html" %}
 {% block title %}Contato | Danilo Oliveira{% endblock %}
 {% block breadcrumb %}Contato{% endblock %}
+{% load static %}
+{% block extra_css %}{{ block.super }}<link rel="stylesheet" href="{% static 'css/manutencao.css' %}">{% endblock %}
 {% block pagina %}
 <header class="p3-heading">
     <p class="p3-eyebrow">Vamos conversar</p>
     <h1>Toda solução começa<br>com uma boa conversa.</h1>
-    <p class="p3-lead">Tem um projeto, uma oportunidade ou um desafio de tecnologia? Entre em contato.</p>
+    <p class="p3-lead">Precisa desenvolver uma solução ou cuidar do seu computador? Vamos conversar sobre o atendimento.</p>
 </header>
 
 <div class="p3-contact-layout">
-    <section class="p3-contact-panel" aria-labelledby="p3-contact-heading"><p class="p3-eyebrow">Contato direto</p><h2 id="p3-contact-heading">Conte o que você<br>tem em mente.</h2><p>Compartilhe o contexto, o objetivo e o que você espera construir. Assim, nossa conversa já começa com uma direção.</p><div class="p3-contact-location"><span aria-hidden="true">↗</span><div><strong>Londrina, Paraná</strong><span>Brasil</span></div></div></section>
+    <section class="p3-contact-panel" aria-labelledby="p3-contact-heading"><p class="p3-eyebrow">Contato direto</p><h2 id="p3-contact-heading">Conte o que você<br>tem em mente.</h2><p>Para desenvolvimento, conte sua ideia e o objetivo. Para manutenção, informe se é computador ou notebook e descreva o problema.</p><div class="p3-contact-location"><span aria-hidden="true">↗</span><div><strong>Londrina, Paraná</strong><span>Brasil</span></div></div></section>
     <div class="p3-contact-options">
-        <a class="p3-contact-link" href="mailto:danilooliv.m@hotmail.com"><div><span class="p3-eyebrow">E-mail</span><h2>Envie uma mensagem</h2><p>danilooliv.m@hotmail.com</p></div><span class="p3-arrow" aria-hidden="true">↗</span></a>
+        <a class="p3-contact-link" href="mailto:{{ contato_email }}"><div><span class="p3-eyebrow">E-mail</span><h2>Envie uma mensagem</h2><p>{{ contato_email }}</p></div><span class="p3-arrow" aria-hidden="true">↗</span></a>
+        {% if contato_whatsapp_url %}<a class="p3-contact-link" href="{{ contato_whatsapp_url }}"><div><span class="p3-eyebrow">WhatsApp Business</span><h2>Fale sobre seu atendimento</h2><p>+{{ contato_whatsapp_numero }}</p></div><i class="bi bi-whatsapp p3-arrow" aria-hidden="true"></i></a>{% endif %}
         <a class="p3-contact-link" href="https://www.linkedin.com/in/danilo-oliveira-5444b7204/"><div><span class="p3-eyebrow">LinkedIn</span><h2>Vamos nos conectar</h2><p>Trajetória e oportunidades profissionais.</p></div><span class="p3-arrow" aria-hidden="true">↗</span></a>
-        <div class="p3-contact-note"><h3>Por onde começar?</h3><p>Na mensagem, apresente-se e conte brevemente sobre o projeto ou a oportunidade. Se houver um prazo em mente, inclua essa informação.</p><p class="p3-small">O botão de e-mail abre o aplicativo de mensagens configurado no seu dispositivo.</p></div>
+        <div class="p3-contact-note"><h3>Por onde começar?</h3><p>Apresente-se e explique o que precisa. Se já tiver um atendimento, você também pode usar as mensagens da sua área do cliente.</p><p class="p3-small">O botão de e-mail abre o aplicativo de mensagens configurado no seu dispositivo.</p></div>
     </div>
 </div>
 
+<section class="p3-card pm-contact-extra"><p class="p3-eyebrow">Computadores e notebooks</p><h2>Coleta e entrega combinadas com você.</h2><p>Local, disponibilidade, horários e eventuais custos são definidos por contato antes do atendimento. Depois, as informações combinadas ficam registradas na sua ordem de serviço.</p><a class="p3-text-link" href="{% url 'core:servicos' %}">Conhecer os serviços <span aria-hidden="true">↗</span></a></section>
 {% endblock %}

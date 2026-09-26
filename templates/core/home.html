@@ -2,7 +2,7 @@
 
 
 {% block title %}
-Danilo Oliveira | Engenharia de Software
+Danilo Oliveira | Software e manutenção técnica
 {% endblock %}
 
 
@@ -21,24 +21,23 @@ Danilo Oliveira | Engenharia de Software
                 <div class="col-lg-6 hero-content">
 
                     <span class="hero-label">
-                        Engenharia de Software
+                        Software e manutenção técnica
                     </span>
 
 
                     <h1>
-                        Transformando ideias em
+                        Tecnologia para suas ideias e
                         <span>
-                            soluções digitais.
+                            seus equipamentos.
                         </span>
                     </h1>
 
 
                     <p class="hero-description">
 
-                        Engenharia de Software,
-                        análise de requisitos e desenvolvimento
-                        de soluções digitais pensadas
-                        para problemas reais.
+                        Desenvolvimento de soluções digitais e manutenção de
+                        computadores e notebooks. Atendimento próximo,
+                        do primeiro contato à entrega.
 
                     </p>
 
@@ -46,23 +45,23 @@ Danilo Oliveira | Engenharia de Software
                     <div class="hero-actions">
 
                         <a
-                            href="{% url 'portfolio:projetos' %}"
+                            href="{% url 'area_cliente:painel' %}"
                             class="btn btn-primary-custom"
                         >
 
-                            Ver projetos
+                            Acompanhar meu atendimento
 
-                            <i class="bi bi-arrow-right"></i>
+                            <i class="bi bi-arrow-right" aria-hidden="true"></i>
 
                         </a>
 
 
                         <a
-                            href="{% url 'core:contato' %}"
+                            href="{% url 'portfolio:projetos' %}"
                             class="btn btn-outline-custom"
                         >
 
-                            Entre em contato
+                            Conhecer meus projetos
 
                         </a>
 
@@ -100,11 +99,11 @@ Danilo Oliveira | Engenharia de Software
                         <div>
 
                             <strong>
-                                Processos
+                                Hardware
                             </strong>
 
                             <span>
-                                Tecnologia
+                                Manutenção
                             </span>
 
                         </div>
@@ -120,7 +119,7 @@ Danilo Oliveira | Engenharia de Software
 
                         <div class="photo-placeholder">
 
-                            <i class="bi bi-person"></i>
+                            <i class="bi bi-person" aria-hidden="true"></i>
 
                             <span>
                                 Sua foto profissional
@@ -134,16 +133,16 @@ Danilo Oliveira | Engenharia de Software
                     <div class="hero-floating-card">
 
                         <span>
-                            Disponível para projetos
+                            Software e assistência técnica
                         </span>
 
                         <strong>
-                            Vamos desenvolver uma solução?
+                            Como posso ajudar você?
                         </strong>
 
-                        <a href="{% url 'core:contato' %}">
+                        <a href="{% url 'core:servicos' %}" aria-label="Solicitar um serviço">
 
-                            <i class="bi bi-arrow-up-right"></i>
+                            <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
 
                         </a>
 

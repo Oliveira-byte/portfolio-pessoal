@@ -2,19 +2,20 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import (
     LoginView, LogoutView, PasswordChangeDoneView, PasswordChangeView,
 )
-from django.db.models import Max, Q
+from django.db.models import Count, Max, Q
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils import timezone
 from django.views.decorators.http import require_GET, require_POST
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.views.generic import DetailView, TemplateView
 
-from clientes.models import ArquivoSolicitacao, AtualizacaoSolicitacao, Origem, Solicitacao
-from clientes.forms import ArquivoClienteForm
+from clientes.models import ArquivoSolicitacao, AtualizacaoSolicitacao, MensagemSolicitacao, Origem, Solicitacao
+from clientes.forms import ArquivoClienteForm, MensagemClienteForm
 from clientes.downloads import resposta_download
 
 from .forms import LoginClienteForm, SenhaClienteForm
@@ -45,10 +46,17 @@ class PainelView(LoginRequiredMixin, TemplateView):
         nome = usuario.get_full_name().strip()
         context["nome_exibicao"] = nome or usuario.get_username()
         solicitacoes = list(
-            Solicitacao.objects.para_cliente(usuario).annotate(
+            Solicitacao.objects.para_cliente(usuario).select_related("ordemmanutencao").annotate(
+                novas_mensagens=Count("mensagens", filter=Q(mensagens__origem=Origem.EQUIPE, mensagens__lida_cliente_em__isnull=True), distinct=True),
                 ultima_novidade=Max("atualizacoes__criado_em", filter=Q(atualizacoes__visivel_cliente=True)),
             )
         )
+        categoria = self.request.GET.get("categoria", "todos")
+        if categoria not in ("todos", "digital", "manutencao"):
+            categoria = "todos"
+        context.update({"categoria": categoria, "total_manutencoes": sum(item.eh_manutencao for item in solicitacoes), "total_digitais": sum(not item.eh_manutencao for item in solicitacoes), "tem_cadastros": bool(solicitacoes)})
+        if categoria != "todos":
+            solicitacoes = [item for item in solicitacoes if item.eh_manutencao == (categoria == "manutencao")]
         ativas = [item for item in solicitacoes if not item.encerrada]
         # Pendências de resposta aparecem primeiro; em seguida, prazos vencidos.
         ativas.sort(key=lambda item: (item.status != Solicitacao.Status.AGUARDANDO, not item.prazo_vencido))
@@ -56,11 +64,12 @@ class PainelView(LoginRequiredMixin, TemplateView):
             "solicitacoes_ativas": ativas,
             "solicitacoes_encerradas": [item for item in solicitacoes if item.encerrada],
             "total_ativas": len(ativas),
+            "total_novas_mensagens": sum(item.novas_mensagens for item in solicitacoes),
             "total_aguardando": sum(item.status == Solicitacao.Status.AGUARDANDO for item in ativas),
             "total_concluidas": sum(item.status == Solicitacao.Status.CONCLUIDA for item in solicitacoes),
             "tem_solicitacoes": bool(solicitacoes),
             "ultimas_atualizacoes": AtualizacaoSolicitacao.objects.filter(
-                solicitacao__cliente=usuario, solicitacao__visivel_cliente=True,
+                solicitacao__cliente=usuario, solicitacao__visivel_cliente=True, solicitacao_id__in=[item.pk for item in solicitacoes],
                 visivel_cliente=True,
             ).select_related("solicitacao")[:4],
         })
@@ -86,11 +95,11 @@ class SolicitacaoDetalheView(LoginRequiredMixin, DetailView):
 
     def get_queryset(self):
         # Não há exceção para staff: este é o portal do cliente, não o admin.
-        return Solicitacao.objects.para_cliente(self.request.user)
+        return Solicitacao.objects.para_cliente(self.request.user).select_related("ordemmanutencao")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context.update(contexto_arquivos(self.request, self.object))
+        context.update(contexto_colaboracao(self.request, self.object, marcar_lidas=self.request.method == "GET"))
         return context
 
 
@@ -108,14 +117,40 @@ class SenhaAlteradaView(LoginRequiredMixin, PasswordChangeDoneView):
     login_url = reverse_lazy("area_cliente:entrar")
 
 
-def contexto_arquivos(request, solicitacao, *, form_arquivo=None):
-    pagina = Paginator(solicitacao.arquivos.filter(visivel_cliente=True), 10).get_page(request.GET.get("arquivos"))
+def contexto_colaboracao(request, solicitacao, *, marcar_lidas=False, **formularios):
+    pagina = Paginator(solicitacao.mensagens.all(), 30).get_page(request.GET.get("conversa"))
+    conversa = list(reversed(list(pagina.object_list)))
+    if marcar_lidas:
+        ids = [item.pk for item in conversa if item.origem == Origem.EQUIPE and item.lida_cliente_em is None]
+        MensagemSolicitacao.objects.filter(pk__in=ids, lida_cliente_em__isnull=True).update(lida_cliente_em=timezone.now())
+    arquivos_pagina = Paginator(solicitacao.arquivos.filter(visivel_cliente=True), 10).get_page(request.GET.get("arquivos"))
     return {
         "solicitacao": solicitacao,
+        "manutencao": solicitacao.manutencao,
         "atualizacoes": solicitacao.atualizacoes.filter(visivel_cliente=True),
-        "arquivos_pagina": pagina,
-        "form_arquivo": form_arquivo if form_arquivo is not None else ArquivoClienteForm(prefix="anexo"),
+        "arquivos_pagina": arquivos_pagina,
+        "conversa_pagina": pagina,
+        "conversa": conversa,
+        "form_arquivo": formularios.get("form_arquivo", ArquivoClienteForm(prefix="anexo")),
+        "form_mensagem": formularios.get("form_mensagem", MensagemClienteForm(prefix="conversa")),
     }
+
+
+@never_cache
+@login_required(login_url="area_cliente:entrar")
+@require_POST
+def enviar_mensagem(request, pk):
+    solicitacao = get_object_or_404(Solicitacao.objects.para_cliente(request.user), pk=pk)
+    form = MensagemClienteForm(request.POST, prefix="conversa")
+    if form.is_valid():
+        mensagem = form.save(commit=False)
+        mensagem.solicitacao = solicitacao
+        mensagem.autor = request.user
+        mensagem.origem = Origem.CLIENTE
+        mensagem.save()
+        messages.success(request, "Mensagem enviada. Você poderá acompanhar a resposta por aqui.")
+        return redirect(solicitacao.get_absolute_url() + "#mensagens")
+    return render(request, "area_cliente/solicitacao_detalhe.html", contexto_colaboracao(request, solicitacao, form_mensagem=form), status=400)
 
 
 @never_cache
@@ -133,7 +168,7 @@ def enviar_arquivo(request, pk):
         arquivo.save()
         messages.success(request, "Arquivo enviado e vinculado à sua contratação.")
         return redirect(solicitacao.get_absolute_url() + "#arquivos")
-    return render(request, "area_cliente/solicitacao_detalhe.html", contexto_arquivos(request, solicitacao, form_arquivo=form), status=400)
+    return render(request, "area_cliente/solicitacao_detalhe.html", contexto_colaboracao(request, solicitacao, form_arquivo=form), status=400)
 
 
 @never_cache

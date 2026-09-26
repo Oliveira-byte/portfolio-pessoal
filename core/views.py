@@ -19,3 +19,7 @@ def competencias(request):
 
 def contato(request):
     return render(request, "core/contato.html")
+
+
+def servicos(request):
+    return render(request, "core/servicos.html")

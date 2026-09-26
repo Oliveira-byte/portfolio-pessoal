@@ -1,0 +1,23 @@
+<section class="p6-section p8-section" id="mensagens" aria-labelledby="p8-messages-title">
+  <div class="p6-section-heading"><div><p class="p3-eyebrow">Vamos conversar</p><h2 id="p8-messages-title">Mensagens</h2></div><span>{{ conversa_pagina.paginator.count }} no histórico</span></div>
+  <p class="p8-intro">Dúvidas, feedback e decisões sobre esta contratação ficam reunidos aqui.</p>
+  <div class="p3-card p8-conversation">
+    {% if conversa %}
+    <ol class="p8-messages">
+      {% for mensagem in conversa %}
+      <li class="p8-message{% if mensagem.origem == 'cliente' %} p8-message-own{% endif %}">
+        <div class="p8-message-meta"><strong>{% if mensagem.origem == 'cliente' %}Você{% else %}Atendimento{% endif %}</strong>{% if mensagem.origem == 'equipe' and not mensagem.lida_cliente_em %}<span class="p8-badge">Nova</span>{% endif %}<time datetime="{{ mensagem.criado_em|date:'c' }}">{{ mensagem.criado_em|date:"d/m/Y · H:i" }}</time></div>
+        <div class="p8-message-body">{{ mensagem.texto|linebreaks }}</div>
+        {% if mensagem.origem == 'cliente' %}<small class="p8-receipt">{% if mensagem.lida_equipe_em %}Lida pela equipe em {{ mensagem.lida_equipe_em|date:"d/m/Y · H:i" }}{% else %}Enviada{% endif %}</small>{% endif %}
+      </li>
+      {% endfor %}
+    </ol>
+    {% else %}<div class="p8-empty"><i class="bi bi-chat-left-text" aria-hidden="true"></i><h3>A conversa começa aqui.</h3><p>Envie sua primeira mensagem sobre esta contratação.</p></div>{% endif %}
+    {% if conversa_pagina.has_other_pages %}<nav class="p8-pagination" aria-label="Páginas da conversa">{% if conversa_pagina.has_next %}<a href="?conversa={{ conversa_pagina.next_page_number }}&amp;arquivos={{ arquivos_pagina.number }}#mensagens">← Mais antigas</a>{% endif %}<span>Página {{ conversa_pagina.number }} de {{ conversa_pagina.paginator.num_pages }}</span>{% if conversa_pagina.has_previous %}<a href="?conversa={{ conversa_pagina.previous_page_number }}&amp;arquivos={{ arquivos_pagina.number }}#mensagens">Mais recentes →</a>{% endif %}</nav>{% endif %}
+    <form class="p8-form" method="post" action="{% url 'area_cliente:enviar_mensagem' solicitacao.pk %}#mensagens">
+      {% csrf_token %}
+      {% include "area_cliente/partials/campos_form.html" with form=form_mensagem %}
+      <div class="p8-form-footer"><span>Para enviar documentos, use a seção de arquivos abaixo.</span><button class="p3-button" type="submit">Enviar mensagem <i class="bi bi-send" aria-hidden="true"></i></button></div>
+    </form>
+  </div>
+</section>

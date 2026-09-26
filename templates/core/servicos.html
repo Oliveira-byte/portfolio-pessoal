@@ -1,0 +1,14 @@
+{% extends "core/base_interna.html" %}
+{% load static %}
+{% block title %}Serviços | Danilo Oliveira{% endblock %}
+{% block breadcrumb %}Serviços{% endblock %}
+{% block extra_css %}{{ block.super }}<link rel="stylesheet" href="{% static 'css/manutencao.css' %}">{% endblock %}
+{% block pagina %}
+<header class="p3-heading"><p class="p3-eyebrow">Da ideia ao equipamento</p><h1>Como posso ajudar você?</h1><p class="p3-lead">Desenvolvimento de soluções digitais e manutenção técnica, com atendimento direto e acompanhamento em um só lugar.</p></header>
+<div class="p3-grid p3-grid-two">
+<section class="p3-card pm-service-card"><i class="bi bi-code-slash" aria-hidden="true"></i><p class="p3-eyebrow">Projetos e serviços digitais</p><h2>Sua ideia, bem desenvolvida.</h2><p>Conte o que precisa construir ou melhorar. A partir dessa conversa, definimos o escopo e os próximos passos.</p><ul><li>Sites e soluções web</li><li>Análise e organização de requisitos</li><li>Melhorias e suporte a soluções digitais</li></ul><a class="p3-button" href="{% url 'core:contato' %}">Conversar sobre um projeto <span aria-hidden="true">↗</span></a></section>
+<section class="p3-card pm-service-card"><i class="bi bi-tools" aria-hidden="true"></i><p class="p3-eyebrow">Computadores e notebooks</p><h2>Cuidado com seu equipamento.</h2><p>Avaliação do problema e definição do serviço adequado. O orçamento é combinado diretamente com você antes da execução.</p><ul><li>Diagnóstico e reparos</li><li>Limpeza e manutenção preventiva</li><li>Formatação e configuração do sistema</li><li>Coleta e entrega mediante combinação</li></ul><a class="p3-button" href="{% url 'core:contato' %}">Conversar sobre manutenção <span aria-hidden="true">↗</span></a></section>
+</div>
+<section class="pm-how" aria-labelledby="pm-how-title"><p class="p3-eyebrow">Atendimento próximo</p><h2 id="pm-how-title">Do contato ao acompanhamento.</h2><ol><li><h3>Conte o que precisa</h3><p>Entre em contato para explicar sua ideia ou o problema do equipamento.</p></li><li><h3>Combinamos os detalhes</h3><p>Definimos o serviço, os valores e, quando necessário, a coleta e a entrega.</p></li><li><h3>Acompanhe por aqui</h3><p>Após o cadastro do atendimento e a liberação do seu acesso, consulte etapas, arquivos e mensagens.</p></li></ol></section>
+<aside class="p3-cta"><div><p class="p3-eyebrow">Já é cliente?</p><h2>Seu atendimento está aqui.</h2><p>Entre para acompanhar seus projetos e ordens de manutenção.</p></div><a class="p3-button p3-button-white" href="{% url 'area_cliente:painel' %}">Acompanhar meu atendimento <span aria-hidden="true">↗</span></a></aside>
+{% endblock %}

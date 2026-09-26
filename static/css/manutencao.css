@@ -1,0 +1,39 @@
+/* Acompanhamento de manutenção e apresentação dos serviços. */
+.pm-filters{display:flex;flex-wrap:wrap;gap:9px;margin:0 0 28px}
+.pm-filters a{display:inline-flex;align-items:center;gap:9px;padding:11px 15px;border:1px solid var(--p3-line);border-radius:9px;font-size:12px;color:var(--p3-dark);background:#fff}
+.pm-filters a[aria-current=page]{background:var(--p3-dark);color:#fff;border-color:var(--p3-dark)}
+.pm-filters span{font-size:11px;border:1px solid currentColor;min-width:22px;border-radius:12px;padding:0 6px;text-align:center}
+.pm-device-summary{display:flex;gap:12px;align-items:center;background:#edf3f8;border-radius:10px;padding:16px;color:var(--p3-dark);font-size:13px;overflow-wrap:anywhere}
+.pm-device-summary i{font-size:24px}
+.pm-current{background:linear-gradient(135deg,#193d57,#2c5678);color:#fff}
+.pm-current h2{font-size:29px;color:#fff}
+.pm-current>.p3-eyebrow,.pm-current>p{color:#d3e0ed}
+.pm-current>.p6-next{margin:22px 0 0;background:#fff;color:var(--p3-ink)}
+.pm-section{scroll-margin-top:110px;overflow-wrap:anywhere}
+.pm-section h2{font-size:26px}
+.pm-section h3{font-size:16px}
+.pm-section p{font-size:14px}
+.pm-text-block+.pm-text-block{margin-top:22px}
+.pm-muted{font-size:12px!important;color:var(--p3-muted)}
+.pm-prices{margin:24px 0;padding:18px;background:#f3f6f9;border-radius:12px}
+.pm-prices>div{display:flex;justify-content:space-between;gap:18px;padding:9px 0;font-size:14px}
+.pm-prices dt{font-weight:400}
+.pm-prices dd{font-weight:600;white-space:nowrap;margin:0}
+.pm-prices>.pm-price-total{border-top:1px solid var(--p3-line);margin-top:8px;padding-top:18px;color:var(--p3-dark);font-size:19px}
+.pm-price-total dt{font-weight:700}
+.pm-logistics-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:24px 0}
+.pm-logistics-grid dt{font-size:12px;color:var(--p3-muted);font-weight:400;margin:12px 0 4px}
+.pm-logistics-grid dd{font-size:14px}
+.pm-service-card{display:flex;flex-direction:column;padding:32px;min-width:0}
+.pm-service-card>i{display:inline-flex;align-self:flex-start;font-size:30px;background:#edf3f8;color:var(--p3-dark);padding:12px;border-radius:14px;margin-bottom:24px}
+.pm-service-card h2{font-size:29px}
+.pm-service-card ul{padding-left:18px;color:var(--p3-muted);font-size:14px;line-height:2}
+.pm-service-card .p3-button{margin-top:auto;align-self:flex-start}
+.pm-how{margin-top:42px;padding:30px;border:1px solid var(--p3-line);border-radius:18px;background:#fff}
+.pm-how ol{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px;list-style:none;padding:0;margin:24px 0 0;counter-reset:passo}
+.pm-how li{counter-increment:passo}
+.pm-how li:before{content:"0" counter(passo);display:block;color:#527696;font-size:13px;margin-bottom:14px}
+.pm-how h3{font-size:19px}
+.pm-how p{font-size:13px}
+.pm-contact-extra{margin-top:36px}
+@media(max-width:600px){.pm-logistics-grid,.pm-how ol{grid-template-columns:1fr}.pm-service-card,.pm-how{padding:24px}.pm-prices{padding:12px}.pm-prices>.pm-price-total{font-size:17px}.pm-current h2{font-size:25px}.pm-filters a{font-size:11px}.pm-section h2{font-size:23px}}
