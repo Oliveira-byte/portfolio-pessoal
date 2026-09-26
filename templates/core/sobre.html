@@ -1,0 +1,39 @@
+{% extends "core/base_interna.html" %}
+{% block title %}Sobre | Danilo Oliveira{% endblock %}
+{% block breadcrumb %}Sobre{% endblock %}
+{% block pagina %}
+<header class="p3-heading">
+    <p class="p3-eyebrow">Sobre mim</p>
+    <h1>Tecnologia além<br>do código.</h1>
+    <p class="p3-lead">Entender o problema é o primeiro passo para construir uma boa solução.</p>
+</header>
+
+<section class="p3-about-layout" aria-labelledby="p3-profile-heading">
+    <aside class="p3-profile">
+        <span class="p3-monogram" aria-hidden="true">DO<span>↗</span></span>
+        <p class="p3-eyebrow">Prazer, sou o Danilo</p>
+        <h2 id="p3-profile-heading">Danilo Oliveira</h2>
+        <p>Tecnologia, requisitos e desenvolvimento de soluções digitais.</p>
+        <span class="p3-location">Londrina, Paraná</span>
+        <a class="p3-button p3-button-white" href="{% url 'core:curriculo' %}">Conheça minha trajetória <span aria-hidden="true">→</span></a>
+    </aside>
+    <div class="p3-story">
+        <p class="p3-eyebrow">Minha perspectiva</p>
+        <h2>Conectar necessidades de negócio com possibilidades da tecnologia.</h2>
+        <p>Sou estudante de Engenharia de Software e profissional da área de tecnologia. Minha trajetória passa por suporte a ambientes corporativos, documentação de processos, análise de requisitos e desenvolvimento web.</p>
+        <p>Na Dechra Brasil, tive contato com sistemas, acessos e treinamentos internos. Na Integra.do, atuei com requisitos para integrações entre ERPs e e-commerce, aproximando as necessidades do negócio do trabalho de desenvolvimento.</p>
+        <p>Hoje, aplico esse repertório em projetos com Python e Django, buscando soluções claras, organizadas e úteis para quem vai utilizá-las.</p>
+        <a class="p3-text-link" href="{% url 'portfolio:projetos' %}">Explore meus projetos <span aria-hidden="true">↗</span></a>
+    </div>
+</section>
+<section class="p3-section" aria-labelledby="p3-approach">
+    <div class="p3-section-top"><div><p class="p3-eyebrow">Como eu trabalho</p><h2 id="p3-approach">Do entendimento à solução.</h2></div><p>Organização e comunicação em cada etapa.</p></div>
+    <div class="p3-grid p3-grid-three">
+        <article class="p3-card"><span class="p3-index">01 / ENTENDER</span><h3>Ouvir e investigar</h3><p>Compreender o contexto, os usuários e as necessidades antes de propor funcionalidades.</p></article>
+        <article class="p3-card"><span class="p3-index">02 / ORGANIZAR</span><h3>Dar clareza ao problema</h3><p>Documentar requisitos, alinhar expectativas e transformar necessidades em entregas compreensíveis.</p></article>
+        <article class="p3-card"><span class="p3-index">03 / CONSTRUIR</span><h3>Desenvolver e evoluir</h3><p>Implementar, validar o comportamento e melhorar a solução com base no uso e no feedback.</p></article>
+    </div>
+</section>
+{% include "partials/cta_interna.html" %}
+
+{% endblock %}

@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Danilo Oliveira | Engenharia de Software
+{% endblock %}
+
+
+{% block content %}
+
+
+<section class="hero-section">
+
+    <div class="container">
+
+        <div class="hero-card">
+
+            <div class="row align-items-center h-100">
+
+
+                <div class="col-lg-6 hero-content">
+
+                    <span class="hero-label">
+                        Engenharia de Software
+                    </span>
+
+
+                    <h1>
+                        Transformando ideias em
+                        <span>
+                            soluções digitais.
+                        </span>
+                    </h1>
+
+
+                    <p class="hero-description">
+
+                        Engenharia de Software,
+                        análise de requisitos e desenvolvimento
+                        de soluções digitais pensadas
+                        para problemas reais.
+
+                    </p>
+
+
+                    <div class="hero-actions">
+
+                        <a
+                            href="{% url 'portfolio:projetos' %}"
+                            class="btn btn-primary-custom"
+                        >
+
+                            Ver projetos
+
+                            <i class="bi bi-arrow-right"></i>
+
+                        </a>
+
+
+                        <a
+                            href="{% url 'core:contato' %}"
+                            class="btn btn-outline-custom"
+                        >
+
+                            Entre em contato
+
+                        </a>
+
+                    </div>
+
+
+                    <div class="hero-info">
+
+                        <div>
+
+                            <strong>
+                                Software
+                            </strong>
+
+                            <span>
+                                Desenvolvimento
+                            </span>
+
+                        </div>
+
+
+                        <div>
+
+                            <strong>
+                                Requisitos
+                            </strong>
+
+                            <span>
+                                Análise
+                            </span>
+
+                        </div>
+
+
+                        <div>
+
+                            <strong>
+                                Processos
+                            </strong>
+
+                            <span>
+                                Tecnologia
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-lg-6 hero-photo-column">
+
+                    <div class="hero-photo">
+
+                        <div class="photo-placeholder">
+
+                            <i class="bi bi-person"></i>
+
+                            <span>
+                                Sua foto profissional
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="hero-floating-card">
+
+                        <span>
+                            Disponível para projetos
+                        </span>
+
+                        <strong>
+                            Vamos desenvolver uma solução?
+                        </strong>
+
+                        <a href="{% url 'core:contato' %}">
+
+                            <i class="bi bi-arrow-up-right"></i>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+{% endblock %}

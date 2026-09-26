@@ -1,0 +1,14 @@
+<nav class="navbar navbar-expand-xl navbar-light site-navbar" aria-label="Navegação principal">
+    <div class="container">
+        <a class="navbar-brand brand" href="{% url 'core:home' %}"><span class="brand-icon" aria-hidden="true">DO</span><span>Danilo Oliveira</span></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Abrir ou fechar menu"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="mainNavbar"><ul class="navbar-nav mx-auto"><li class="nav-item"><a class="nav-link{% if request.resolver_match.view_name == "core:home" %} active{% endif %}" href="{% url 'core:home' %}" {% if request.resolver_match.view_name == "core:home" %}aria-current="page"{% endif %}>Início</a></li>
+<li class="nav-item"><a class="nav-link{% if request.resolver_match.view_name == "core:sobre" %} active{% endif %}" href="{% url 'core:sobre' %}" {% if request.resolver_match.view_name == "core:sobre" %}aria-current="page"{% endif %}>Sobre</a></li>
+<li class="nav-item"><a class="nav-link{% if request.resolver_match.view_name == "portfolio:projetos" %} active{% endif %}" href="{% url 'portfolio:projetos' %}" {% if request.resolver_match.view_name == "portfolio:projetos" %}aria-current="page"{% endif %}>Projetos</a></li>
+<li class="nav-item"><a class="nav-link{% if request.resolver_match.view_name == "core:curriculo" %} active{% endif %}" href="{% url 'core:curriculo' %}" {% if request.resolver_match.view_name == "core:curriculo" %}aria-current="page"{% endif %}>Currículo</a></li>
+<li class="nav-item"><a class="nav-link{% if request.resolver_match.view_name == "core:competencias" %} active{% endif %}" href="{% url 'core:competencias' %}" {% if request.resolver_match.view_name == "core:competencias" %}aria-current="page"{% endif %}>Competências</a></li>
+<li class="nav-item"><a class="nav-link{% if request.resolver_match.view_name == "core:contato" %} active{% endif %}" href="{% url 'core:contato' %}" {% if request.resolver_match.view_name == "core:contato" %}aria-current="page"{% endif %}>Contato</a></li></ul>
+            <span class="btn btn-client-area p3-client-soon" aria-disabled="true"><span>Área do cliente</span><small>Em breve</small></span>
+        </div>
+    </div>
+</nav>

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="p3-page">
+    <div class="p3-container">
+        <nav class="p3-breadcrumb" aria-label="Localização">
+            <a href="{% url 'core:home' %}">Início</a>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page">{% block breadcrumb %}{{ request.resolver_match.url_name|capfirst }}{% endblock %}</span>
+        </nav>
+        {% block pagina %}{% endblock %}
+    </div>
+</div>
+{% endblock %}

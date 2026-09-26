@@ -1,0 +1,44 @@
+{% extends "core/base_interna.html" %}
+{% block title %}Projetos | Danilo Oliveira{% endblock %}
+{% block breadcrumb %}Projetos{% endblock %}
+{% block pagina %}
+<header class="p3-heading">
+    <p class="p3-eyebrow">Portfólio</p>
+    <h1>Ideias colocadas<br>em prática.</h1>
+    <p class="p3-lead">Uma seleção de projetos pessoais em desenvolvimento, unindo aprendizado, tecnologia e problemas reais.</p>
+</header>
+
+<div class="p3-section-top p3-project-intro"><span class="p3-eyebrow">Projetos selecionados</span><span class="p3-count">02 projetos</span></div>
+<div class="p3-grid p3-grid-two">
+    <article class="p3-project">
+        <div class="p3-project-cover p3-cover-atlas" aria-label="Identidade visual ilustrativa do projeto Atlas Semi-Joias">
+            <span class="p3-cover-top">01 / COMÉRCIO DIGITAL</span>
+            <div class="p3-atlas-mark"><span aria-hidden="true">◇</span><strong>ATLAS</strong><small>SEMI-JOIAS</small></div>
+            <span class="p3-cover-bottom">Joias que eternizam momentos.</span>
+        </div>
+        <div class="p3-project-body"><span class="p3-status">Em desenvolvimento</span><h2>Atlas Semi-Joias</h2>
+            <p>Plataforma de e-commerce para joias personalizadas, com fluxo de personalização e área de usuário.</p>
+            <ul class="p3-tags" aria-label="Tecnologias"><li>Python</li><li>Django</li><li>JavaScript</li><li>Bootstrap</li></ul>
+            <details class="p3-details"><summary>Conheça o projeto <span aria-hidden="true">+</span></summary>
+                <div><h3>O desafio</h3><p>Organizar a escolha de uma joia e as informações de personalização em uma experiência acessível.</p><h3>Meu trabalho</h3><p>Estruturação das páginas, identidade visual e desenvolvimento do fluxo de personalização e cadastro de clientes com Django.</p><h3>Em evolução</h3><p>O projeto segue em desenvolvimento. A navegação, os formulários e a experiência de compra são refinados por etapas.</p></div>
+            </details>
+        </div>
+    </article>
+    <article class="p3-project">
+        <div class="p3-project-cover p3-cover-portfolio" aria-label="Identidade visual ilustrativa do portfólio pessoal">
+            <span class="p3-cover-top">02 / PRESENÇA PROFISSIONAL</span>
+            <div class="p3-portfolio-mark"><span>DO<span aria-hidden="true">↗</span></span><strong>Ideias em<br>soluções digitais.</strong></div>
+            <span class="p3-cover-bottom">Danilo Oliveira · Engenharia de Software</span>
+        </div>
+        <div class="p3-project-body"><span class="p3-status">Em desenvolvimento</span><h2>Portfólio Pessoal</h2>
+            <p>Site multipágina para apresentar minha trajetória, competências e projetos de tecnologia.</p>
+            <ul class="p3-tags" aria-label="Tecnologias"><li>Django</li><li>HTML</li><li>CSS</li><li>Bootstrap</li></ul>
+            <details class="p3-details"><summary>Conheça o projeto <span aria-hidden="true">+</span></summary>
+                <div><h3>O desafio</h3><p>Apresentar informações profissionais de forma organizada, com espaço para cada área crescer.</p><h3>Meu trabalho</h3><p>Definição da arquitetura multipágina, dos templates compartilhados e da identidade visual azul e cinza.</p><h3>Próximas evoluções</h3><p>Projetos gerenciáveis pelo painel e páginas individuais. A área do cliente faz parte do planejamento futuro.</p></div>
+            </details>
+        </div>
+    </article>
+</div>
+{% include "partials/cta_interna.html" %}
+
+{% endblock %}
