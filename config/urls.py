@@ -11,4 +11,6 @@ urlpatterns = [
         "projetos/",
         include("portfolio.urls")
     ),
+
+    path("area-cliente/", include("area_cliente.urls")),
 ]

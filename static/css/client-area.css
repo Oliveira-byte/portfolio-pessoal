@@ -1,0 +1,53 @@
+/* Etapa 5: carregar após pages.css e projects.css. */
+.p5-auth-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:32px;padding:20px 0 35px;align-items:stretch}
+.p5-welcome{background:var(--p3-dark);border-radius:24px;padding:48px;display:flex;flex-direction:column}
+.p5-welcome h1{color:#fff;font-size:clamp(38px,4vw,56px)}
+.p5-welcome p{color:#c4d4e1;font-size:17px;max-width:360px}
+.p5-welcome .p3-eyebrow{color:#b7d0e7;font-size:12px}
+.p5-signature{margin-top:auto;padding-top:55px;display:flex;flex-direction:column;color:#fff}
+.p5-signature>span:first-child{font-size:52px;font-weight:700;letter-spacing:-3px;line-height:1.3;margin-bottom:18px}
+.p5-signature>span:last-child{font-size:13px;color:#c4d4e1;margin-top:5px}
+.p5-auth-card{padding:40px}
+.p5-auth-card h2{font-size:30px}
+.p5-field{margin:24px 0}
+.p5-field label{display:block;font-weight:650;font-size:14px;margin-bottom:9px}
+.p5-input{display:block;width:100%;padding:13px 15px;min-height:49px;border:1px solid #b7c7d4;border-radius:10px;background:#fff;color:var(--p3-ink);font:inherit;font-size:16px;line-height:1.5}
+.p5-input:focus-visible{outline:3px solid #3978bb;outline-offset:2px}
+.p5-input[aria-invalid="true"]{border-color:#a12929}
+.p5-full{width:100%;font-family:inherit;cursor:pointer}
+.p5-errors{color:#942222;background:#fff3f3;padding:12px 14px;border-radius:8px;font-size:14px;margin-block:10px;line-height:1.5}
+.p5-errors ul{list-style:none;padding:0;margin:0}
+.p5-errors li+li{margin-top:6px}
+.p5-help{font-size:12px;color:var(--p3-muted);line-height:1.7;margin-top:10px}
+.p5-help ul{padding-left:18px;margin:0}
+.p5-assistance{font-size:13px;text-align:center;margin:27px 0 0!important;line-height:1.8}
+.p5-assistance a,.p5-muted a{color:var(--p3-blue);text-decoration:underline;text-underline-offset:3px}
+.p5-panel-heading{display:flex;justify-content:space-between;align-items:center;gap:30px}
+.p5-panel-heading h1{font-size:clamp(34px,4vw,52px);overflow-wrap:anywhere}
+.p5-panel-heading>form{flex-shrink:0}
+.p5-button-outline{background:#fff;border-color:var(--p3-line);color:var(--p3-blue);cursor:pointer}
+.p5-account{padding:34px}
+.p5-account h2{font-size:27px}
+.p5-account dl{margin:0}
+.p5-account dt{color:var(--p3-muted);font-size:12px;font-weight:400;margin-top:20px}
+.p5-account dd{font-size:16px;margin:5px 0 0;font-weight:600;overflow-wrap:anywhere}
+.p5-account .p5-muted{margin:28px 0 0;font-size:13px}
+.p5-account .p3-button{margin-top:15px}
+.p5-password-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:50px;padding-top:20px;align-items:start}
+.p5-password-layout .p3-heading{border:0;padding:20px 0}
+.p5-password-layout h1{font-size:clamp(35px,4vw,48px)}
+.p5-password-layout .p5-auth-card .p5-field:first-child{margin-top:0}
+.p5-back{font-size:13px;margin-bottom:30px}
+.p5-success{max-width:800px;margin:30px auto;text-align:center;padding:50px}
+.p5-success h1{font-size:clamp(32px,4vw,46px)}
+.p5-success p{max-width:570px;margin-inline:auto}
+.p5-check{display:flex;align-items:center;justify-content:center;border-radius:50%;width:62px;height:62px;background:#e8f2ed;color:#21603e;font-size:28px;margin:0 auto 26px}
+.p5-logout{text-align:center;margin-top:20px}
+.p5-link-button{border:0;background:transparent;color:var(--p3-blue);text-decoration:underline;padding:12px;font:inherit;cursor:pointer}
+.p5-page-button{display:inline-flex!important;align-items:center;justify-content:center;gap:9px}
+.p5-page-button:hover{color:#fff;background:#244f7d}
+.p5-page-button[aria-current="page"]{outline:2px solid #244f7d;outline-offset:3px}
+.p5-page-button small{font-size:10px}
+.p3-page button:focus-visible{outline:3px solid #3978bb;outline-offset:4px}
+@media(max-width:900px){.p5-auth-layout,.p5-password-layout{gap:25px}.p5-welcome,.p5-auth-card{padding:30px}.p5-panel-heading{align-items:flex-start;flex-direction:column}.p5-panel-heading>form{flex-shrink:1}}
+@media(max-width:700px){.p5-auth-layout,.p5-password-layout{grid-template-columns:1fr}.p5-welcome{padding:30px}.p5-signature{padding-top:25px}.p5-signature>span:first-child{font-size:34px;margin-bottom:8px}.p5-welcome h1{font-size:38px}.p5-account,.p5-auth-card{padding:25px}.p5-password-layout .p3-heading{margin-bottom:0;padding-bottom:0}.p5-success{padding:30px 24px}.p5-panel-heading .p3-lead{font-size:16px}}

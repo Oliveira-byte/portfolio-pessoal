@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "portfolio",
     "clientes",
     "painel",
+    "area_cliente.apps.AreaClienteConfig",
 ]
 
 AUTH_USER_MODEL = "accounts.User"

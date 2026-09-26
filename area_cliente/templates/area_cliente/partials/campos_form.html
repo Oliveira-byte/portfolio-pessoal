@@ -1,0 +1,11 @@
+{% if form.non_field_errors %}
+<div class="p5-errors" role="alert">{{ form.non_field_errors }}</div>
+{% endif %}
+{% for field in form %}
+<div class="p5-field">
+    {{ field.label_tag }}
+    {{ field }}
+    {% if field.help_text %}<div class="p5-help" id="{{ field.auto_id }}_helptext">{{ field.help_text|safe }}</div>{% endif %}
+    {% if field.errors %}<div class="p5-errors" id="{{ field.auto_id }}_error" role="alert">{{ field.errors }}</div>{% endif %}
+</div>
+{% endfor %}

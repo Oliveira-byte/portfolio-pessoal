@@ -1,0 +1,31 @@
+{% extends "core/base_interna.html" %}
+{% block title %}Área do cliente | Danilo Oliveira{% endblock %}
+{% block breadcrumb %}Área do cliente{% endblock %}
+{% block pagina %}
+<div class="p5-auth-layout">
+    <section class="p5-welcome" aria-labelledby="p5-login-title">
+        <p class="p3-eyebrow">Área do cliente</p>
+        <h1 id="p5-login-title">Seu acesso.<br>Seu espaço.</h1>
+        <p>Entre para acessar sua conta e gerenciar sua senha.</p>
+        <div class="p5-signature"><span aria-hidden="true">DO ↗</span><strong>Danilo Oliveira</strong><span>Tecnologia e soluções digitais.</span></div>
+    </section>
+    <section class="p3-card p5-auth-card" aria-labelledby="p5-form-title">
+        {% if request.user.is_authenticated %}
+        <p class="p3-eyebrow">Sessão ativa</p><h2 id="p5-form-title">Você já está conectado.</h2>
+        <p>Continue para sua conta ou saia para utilizar outro acesso.</p>
+        <a class="p3-button p5-full" href="{% url 'area_cliente:painel' %}">Ir para minha conta <span aria-hidden="true">→</span></a>
+        <form method="post" action="{% url 'area_cliente:sair' %}" class="p5-logout">{% csrf_token %}<button class="p5-link-button" type="submit">Sair desta conta</button></form>
+        {% else %}
+        <p class="p3-eyebrow">Bem-vindo</p><h2 id="p5-form-title">Entre na sua conta</h2>
+        <p>Utilize os dados de acesso fornecidos para você.</p>
+        <form method="post" action="{% url 'area_cliente:entrar' %}">
+            {% csrf_token %}
+            {% include "area_cliente/partials/campos_form.html" %}
+            {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
+            <button type="submit" class="p3-button p5-full">Entrar <span aria-hidden="true">→</span></button>
+        </form>
+        <p class="p5-assistance">Precisa de acesso ou esqueceu sua senha?<br><a href="{% url 'core:contato' %}">Entre em contato</a>.</p>
+        {% endif %}
+    </section>
+</div>
+{% endblock %}

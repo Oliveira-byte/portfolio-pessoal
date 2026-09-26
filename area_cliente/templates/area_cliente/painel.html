@@ -1,0 +1,17 @@
+{% extends "core/base_interna.html" %}
+{% block title %}Minha conta | Danilo Oliveira{% endblock %}
+{% block breadcrumb %}Minha conta{% endblock %}
+{% block pagina %}
+<header class="p3-heading p5-panel-heading">
+    <div><p class="p3-eyebrow">Área do cliente</p><h1>Olá, {{ nome_exibicao }}.</h1><p class="p3-lead">Confira seus dados e gerencie o acesso à sua conta.</p></div>
+    <form method="post" action="{% url 'area_cliente:sair' %}">{% csrf_token %}<button type="submit" class="p3-button p5-button-outline">Sair da conta <span aria-hidden="true">↗</span></button></form>
+</header>
+<div class="p3-grid p3-grid-two">
+    <section class="p3-card p5-account" aria-labelledby="p5-account-title"><p class="p3-eyebrow">Seu perfil</p><h2 id="p5-account-title">Dados da conta</h2>
+        <dl><dt>Nome</dt><dd>{{ nome_exibicao }}</dd><dt>Identificação de acesso</dt><dd>{{ request.user.get_username }}</dd><dt>E-mail</dt><dd>{{ request.user.email|default:"Não informado" }}</dd></dl>
+        <p class="p5-muted">Se algum dado precisar de correção, <a href="{% url 'core:contato' %}">entre em contato</a>.</p>
+    </section>
+    <section class="p3-card p5-account" aria-labelledby="p5-security-title"><p class="p3-eyebrow">Acesso</p><h2 id="p5-security-title">Gerencie sua senha</h2><p>Você pode definir uma nova senha confirmando a senha atual da sua conta.</p><a href="{% url 'area_cliente:alterar_senha' %}" class="p3-button">Alterar minha senha <span aria-hidden="true">→</span></a></section>
+</div>
+<aside class="p3-cta"><div><p class="p3-eyebrow">Contato direto</p><h2>Precisa falar sobre seu projeto?</h2><p>Entre em contato para consultar o andamento de uma entrega ou conversar sobre uma nova ideia.</p></div><a class="p3-button p3-button-white" href="{% url 'core:contato' %}">Falar com Danilo <span aria-hidden="true">↗</span></a></aside>
+{% endblock %}
