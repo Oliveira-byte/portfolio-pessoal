@@ -3,12 +3,19 @@ from django.contrib.auth.views import (
     LoginView, LogoutView, PasswordChangeDoneView, PasswordChangeView,
 )
 from django.db.models import Max, Q
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_GET, require_POST
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.views.generic import DetailView, TemplateView
 
-from clientes.models import AtualizacaoSolicitacao, Solicitacao
+from clientes.models import ArquivoSolicitacao, AtualizacaoSolicitacao, Origem, Solicitacao
+from clientes.forms import ArquivoClienteForm
+from clientes.downloads import resposta_download
 
 from .forms import LoginClienteForm, SenhaClienteForm
 
@@ -83,7 +90,7 @@ class SolicitacaoDetalheView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["atualizacoes"] = self.object.atualizacoes.filter(visivel_cliente=True)
+        context.update(contexto_arquivos(self.request, self.object))
         return context
 
 
@@ -99,3 +106,40 @@ class AlterarSenhaView(LoginRequiredMixin, PasswordChangeView):
 class SenhaAlteradaView(LoginRequiredMixin, PasswordChangeDoneView):
     template_name = "area_cliente/senha_alterada.html"
     login_url = reverse_lazy("area_cliente:entrar")
+
+
+def contexto_arquivos(request, solicitacao, *, form_arquivo=None):
+    pagina = Paginator(solicitacao.arquivos.filter(visivel_cliente=True), 10).get_page(request.GET.get("arquivos"))
+    return {
+        "solicitacao": solicitacao,
+        "atualizacoes": solicitacao.atualizacoes.filter(visivel_cliente=True),
+        "arquivos_pagina": pagina,
+        "form_arquivo": form_arquivo if form_arquivo is not None else ArquivoClienteForm(prefix="anexo"),
+    }
+
+
+@never_cache
+@login_required(login_url="area_cliente:entrar")
+@require_POST
+def enviar_arquivo(request, pk):
+    solicitacao = get_object_or_404(Solicitacao.objects.para_cliente(request.user), pk=pk)
+    form = ArquivoClienteForm(request.POST, request.FILES, prefix="anexo")
+    if form.is_valid():
+        arquivo = form.save(commit=False)
+        arquivo.solicitacao = solicitacao
+        arquivo.enviado_por = request.user
+        arquivo.origem = Origem.CLIENTE
+        arquivo.visivel_cliente = True
+        arquivo.save()
+        messages.success(request, "Arquivo enviado e vinculado à sua contratação.")
+        return redirect(solicitacao.get_absolute_url() + "#arquivos")
+    return render(request, "area_cliente/solicitacao_detalhe.html", contexto_arquivos(request, solicitacao, form_arquivo=form), status=400)
+
+
+@never_cache
+@login_required(login_url="area_cliente:entrar")
+@require_GET
+def arquivo_download(request, pk, arquivo_pk):
+    solicitacao = get_object_or_404(Solicitacao.objects.para_cliente(request.user), pk=pk)
+    arquivo = get_object_or_404(ArquivoSolicitacao, pk=arquivo_pk, solicitacao=solicitacao, visivel_cliente=True)
+    return resposta_download(arquivo)

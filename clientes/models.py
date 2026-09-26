@@ -6,6 +6,8 @@ from django.db.models import Q
 from django.urls import reverse
 from django.utils import timezone
 
+from .storage import caminho_arquivo, private_storage, validar_arquivo
+
 
 class SolicitacaoQuerySet(models.QuerySet):
     def para_cliente(self, usuario):
@@ -104,6 +106,43 @@ class AtualizacaoSolicitacao(models.Model):
         verbose_name = "atualização da contratação"
         verbose_name_plural = "atualizações das contratações"
         ordering = ("-criado_em", "-pk")
+
+    def __str__(self):
+        return self.titulo
+
+
+class Origem(models.TextChoices):
+    CLIENTE = "cliente", "Cliente"
+    EQUIPE = "equipe", "Atendimento"
+
+
+class ArquivoSolicitacao(models.Model):
+    solicitacao = models.ForeignKey(Solicitacao, on_delete=models.CASCADE, related_name="arquivos", verbose_name="contratação")
+    titulo = models.CharField("título do arquivo", max_length=160)
+    arquivo = models.FileField("arquivo", upload_to=caminho_arquivo, storage=private_storage, validators=[validar_arquivo], max_length=255)
+    nome_original = models.CharField("nome original", max_length=255, editable=False)
+    tamanho = models.PositiveBigIntegerField("tamanho em bytes", editable=False, default=0)
+    origem = models.CharField("enviado por", max_length=10, choices=Origem.choices, default=Origem.EQUIPE, editable=False)
+    enviado_por = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, editable=False, related_name="arquivos_enviados")
+    visivel_cliente = models.BooleanField("visível para o cliente", default=True)
+    criado_em = models.DateTimeField("enviado em", auto_now_add=True)
+
+    class Meta:
+        verbose_name = "arquivo da contratação"
+        verbose_name_plural = "arquivos das contratações"
+        ordering = ("-criado_em", "-pk")
+
+    def save(self, *args, **kwargs):
+        from .storage import nome_seguro
+        if self.pk:
+            anterior = type(self).objects.get(pk=self.pk)
+            if anterior.arquivo.name != self.arquivo.name or not self.arquivo._committed or anterior.solicitacao_id != self.solicitacao_id:
+                raise ValidationError("Envie um novo registro para substituir ou mover um arquivo.")
+        if not self.arquivo._committed:
+            validar_arquivo(self.arquivo)
+            self.nome_original = nome_seguro(self.arquivo.name)
+            self.tamanho = self.arquivo.size
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.titulo

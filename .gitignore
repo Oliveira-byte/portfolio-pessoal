@@ -7,3 +7,5 @@ __pycache__/
 *.pyc
 db.sqlite3
 node_modules/
+# Anexos privados das contratações (não versionar nem publicar).
+private_uploads/

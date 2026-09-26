@@ -141,3 +141,5 @@ MAILERS = {
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
+# Nunca servir esta pasta como mídia ou conteúdo estático.
+PRIVATE_FILES_ROOT = BASE_DIR / "private_uploads"
