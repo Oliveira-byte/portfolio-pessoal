@@ -1,0 +1,1 @@
+{% if form.non_field_errors %}<div class="g-errors" role="alert">{{ form.non_field_errors }}</div>{% endif %}{% for field in form %}{% include 'painel/partials/campo.html' %}{% endfor %}

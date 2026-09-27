@@ -1,0 +1,33 @@
+from django.urls import path
+from . import views
+
+app_name = "painel"
+urlpatterns = [
+    path("", views.inicio, name="inicio"),
+    path("entrar/", views.EntrarView.as_view(), name="entrar"),
+    path("sair/", views.SairView.as_view(), name="sair"),
+    path("clientes/", views.clientes, name="clientes"),
+    path("clientes/novo/", views.cliente_form, name="cliente_novo"),
+    path("clientes/<int:pk>/", views.cliente_detalhe, name="cliente"),
+    path("clientes/<int:pk>/editar/", views.cliente_form, name="cliente_editar"),
+    path("clientes/<int:pk>/senha/", views.cliente_senha, name="cliente_senha"),
+    path("atendimentos/<int:pk>/", views.atendimento_detalhe, name="atendimento"),
+    path("atendimentos/<int:pk>/editar/", views.atendimento_form, name="atendimento_editar"),
+    path("atendimentos/<int:pk>/mensagens/", views.enviar_mensagem, name="enviar_mensagem"),
+    path("atendimentos/<int:pk>/historico/", views.adicionar_atualizacao, name="adicionar_atualizacao"),
+    path("atendimentos/<int:pk>/arquivos/", views.enviar_arquivo, name="enviar_arquivo"),
+    path("atendimentos/<int:pk>/arquivos/<int:arquivo_pk>/download/", views.arquivo_download, name="arquivo_download"),
+    path("atendimentos/<int:pk>/arquivos/<int:arquivo_pk>/editar/", views.arquivo_editar, name="arquivo_editar"),
+    path("atendimentos/<int:pk>/arquivos/<int:arquivo_pk>/excluir/", views.arquivo_excluir, name="arquivo_excluir"),
+    path("atendimentos/<str:categoria>/", views.atendimentos, name="atendimentos"),
+    path("atendimentos/<str:categoria>/novo/", views.atendimento_form, name="atendimento_novo"),
+    path("mensagens/<int:pk>/", views.abrir_mensagem, name="abrir_mensagem"),
+    path("mensagens/", views.mensagens_lista, name="mensagens"),
+    path("arquivos/", views.arquivos_lista, name="arquivos"),
+    path("portfolio/", views.portfolio_lista, name="portfolio"),
+    path("portfolio/novo/", views.portfolio_form, name="portfolio_novo"),
+    path("portfolio/<int:pk>/editar/", views.portfolio_form, name="portfolio_editar"),
+    path("tecnologias/", views.tecnologias, name="tecnologias"),
+    path("tecnologias/<int:pk>/", views.tecnologias, name="tecnologia_editar"),
+    path("contato/", views.contato, name="contato"),
+]

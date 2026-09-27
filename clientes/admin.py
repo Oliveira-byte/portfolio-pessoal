@@ -10,6 +10,7 @@ from django.views.decorators.http import require_GET
 
 from .downloads import resposta_download
 from .forms import SolicitacaoDigitalForm
+from .services import salvar_atendimento
 
 from .models import ArquivoSolicitacao, AtualizacaoSolicitacao, MensagemSolicitacao, OrdemManutencao, Origem, Solicitacao
 
@@ -71,16 +72,7 @@ class SolicitacaoAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         anterior = Solicitacao.objects.get(pk=obj.pk) if change else None
-        super().save_model(request, obj, form, change)
-        mudou = anterior and (anterior.status != obj.status or anterior.progresso != obj.progresso)
-        if not anterior or mudou:
-            AtualizacaoSolicitacao.objects.create(
-                solicitacao=obj,
-                titulo="Andamento atualizado" if anterior else "Solicitação cadastrada",
-                mensagem=f"{obj.get_status_display()} · Progresso informado: {obj.progresso}%.",
-                status_registrado=obj.status, progresso_registrado=obj.progresso,
-                autor=request.user,
-            )
+        salvar_atendimento(obj, request.user, anterior)
 
     def save_formset(self, request, form, formset, change):
         instances = formset.save(commit=False)
@@ -234,16 +226,4 @@ class OrdemManutencaoAdmin(SolicitacaoAdmin):
 
     def save_model(self, request, obj, form, change):
         anterior = OrdemManutencao.objects.get(pk=obj.pk) if change else None
-        admin.ModelAdmin.save_model(self, request, obj, form, change)
-        if not anterior or anterior.etapa != obj.etapa:
-            AtualizacaoSolicitacao.objects.create(
-                solicitacao=obj, titulo="Etapa da manutenção atualizada" if anterior else "Ordem de serviço cadastrada",
-                mensagem=obj.get_etapa_display(), autor=request.user,
-            )
-        campos_acordo = ("detalhes_orcamento", "valor_servicos", "valor_pecas", "valor_logistica", "data_acordo", "pagamento_combinado")
-        if obj.orcamento_acordado and (not anterior or not anterior.orcamento_acordado or any(getattr(anterior, campo) != getattr(obj, campo) for campo in campos_acordo)):
-            AtualizacaoSolicitacao.objects.create(
-                solicitacao=obj, titulo="Orçamento acordado registrado",
-                mensagem=f"{obj.detalhes_orcamento}\nTotal acordado: R$ " + format(obj.total_acordado, ".2f").replace(".", ","),
-                autor=request.user,
-            )
+        salvar_atendimento(obj, request.user, anterior)

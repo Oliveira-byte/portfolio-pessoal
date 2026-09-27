@@ -9,7 +9,7 @@
 <li class="nav-item"><a class="nav-link{% if request.resolver_match.view_name == "core:curriculo" %} active{% endif %}" href="{% url 'core:curriculo' %}" {% if request.resolver_match.view_name == "core:curriculo" %}aria-current="page"{% endif %}>Currículo</a></li>
 <li class="nav-item"><a class="nav-link{% if request.resolver_match.view_name == "core:competencias" %} active{% endif %}" href="{% url 'core:competencias' %}" {% if request.resolver_match.view_name == "core:competencias" %}aria-current="page"{% endif %}>Competências</a></li>
 <li class="nav-item"><a class="nav-link{% if request.resolver_match.view_name == "core:contato" %} active{% endif %}" href="{% url 'core:contato' %}" {% if request.resolver_match.view_name == "core:contato" %}aria-current="page"{% endif %}>Contato</a></li></ul>
-            <a class="btn btn-client-area p5-page-button" href="{% url 'area_cliente:painel' %}" {% if request.resolver_match.namespace == 'area_cliente' %}aria-current="page"{% endif %}>{% if request.user.is_authenticated %}Meu painel{% else %}Área do cliente{% endif %}<span aria-hidden="true">↗</span></a>
+            <a class="btn btn-client-area p5-page-button" href="{% if request.user.is_staff %}{% url 'painel:inicio' %}{% else %}{% url 'area_cliente:painel' %}{% endif %}" {% if request.resolver_match.namespace == 'area_cliente' %}aria-current="page"{% endif %}>{% if request.user.is_staff %}Gestão{% elif request.user.is_authenticated %}Meu painel{% else %}Área do cliente{% endif %}<span aria-hidden="true">↗</span></a>
         </div>
     </div>
 </nav>
