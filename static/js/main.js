@@ -1,5 +1,1 @@
-document.addEventListener("DOMContentLoaded", () => {
-
-    console.log("Portfólio Danilo Oliveira carregado.");
-
-});
+// A navegação principal é controlada pelo Bootstrap.

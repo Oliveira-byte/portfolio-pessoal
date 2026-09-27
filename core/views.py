@@ -1,4 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
+from django.urls import reverse
+from .servicos_catalogo import SERVICOS
 
 
 def home(request):
@@ -14,7 +16,7 @@ def curriculo(request):
 
 
 def competencias(request):
-    return render(request, "core/competencias.html")
+    return redirect(reverse("core:curriculo") + "#competencias", permanent=True)
 
 
 def contato(request):
@@ -22,4 +24,8 @@ def contato(request):
 
 
 def servicos(request):
-    return render(request, "core/servicos.html")
+    return render(request, "core/servicos.html", {
+        "servicos_formularios": SERVICOS,
+        "servicos_digitais": [s for s in SERVICOS if s["grupo"] == "Serviços Digitais"],
+        "servicos_equipamentos": [s for s in SERVICOS if s["grupo"] == "Computadores e notebooks"],
+    })

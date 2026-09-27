@@ -14,27 +14,14 @@
 </div>
 <div class="p3-grid p3-grid-two">
     {% for projeto in projetos %}
-    <article class="p3-project p4-project-card">
-        {% include "portfolio/partials/capa.html" %}
-        <div class="p3-project-body">
-            <div class="p4-badges"><span class="p3-status">{{ projeto.get_status_display }}</span>{% if projeto.destaque %}<span class="p4-featured">Destaque</span>{% endif %}</div>
-            <h2>{{ projeto.titulo }}</h2>
-            <p>{{ projeto.resumo }}</p>
-            {% if projeto.tecnologias.all %}
-            <ul class="p3-tags" aria-label="Tecnologias utilizadas">
-                {% for tecnologia in projeto.tecnologias.all %}<li>{{ tecnologia.nome }}</li>{% endfor %}
-            </ul>
-            {% endif %}
-            <a class="p3-text-link p4-project-link" href="{{ projeto.get_absolute_url }}" aria-label="Conhecer o projeto {{ projeto.titulo }}">Conheça o projeto <span aria-hidden="true">↗</span></a>
-        </div>
-    </article>
+    {% include 'portfolio/partials/cartao.html' %}
     {% endfor %}
 </div>
 {% else %}
 <section class="p3-card p4-empty" aria-labelledby="p4-empty-title">
     <p class="p3-eyebrow">Em preparação</p><h2 id="p4-empty-title">Novos projetos a caminho.</h2>
     <p>Em breve, você poderá conhecer meus projetos por aqui. Enquanto isso, veja as tecnologias e conhecimentos que fazem parte do meu trabalho.</p>
-    <a class="p3-button" href="{% url 'core:competencias' %}">Explorar competências <span aria-hidden="true">→</span></a>
+    <a class="p3-button" href="{% url 'core:curriculo' %}#competencias">Explorar competências <span aria-hidden="true">→</span></a>
 </section>
 {% endif %}
 {% include "partials/cta_interna.html" %}

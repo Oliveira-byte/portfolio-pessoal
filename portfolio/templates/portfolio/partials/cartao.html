@@ -1,0 +1,14 @@
+    <article class="p3-project p4-project-card">
+        {% include "portfolio/partials/capa.html" %}
+        <div class="p3-project-body">
+            <div class="p4-badges"><span class="p3-status">{{ projeto.get_status_display }}</span>{% if projeto.destaque %}<span class="p4-featured">Destaque</span>{% endif %}</div>
+            <h2>{{ projeto.titulo }}</h2>
+            <p>{{ projeto.resumo }}</p>
+            {% if projeto.tecnologias.all %}
+            <ul class="p3-tags" aria-label="Tecnologias utilizadas">
+                {% for tecnologia in projeto.tecnologias.all %}<li>{{ tecnologia.nome }}</li>{% endfor %}
+            </ul>
+            {% endif %}
+            <a class="p3-text-link p4-project-link" href="{{ projeto.get_absolute_url }}" aria-label="Conhecer o projeto {{ projeto.titulo }}">Conheça o projeto <span aria-hidden="true">↗</span></a>
+        </div>
+    </article>

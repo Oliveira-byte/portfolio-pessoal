@@ -1,4 +1,5 @@
 {% extends "core/base_interna.html" %}
+{% load static %}
 {% block title %}Sobre | Danilo Oliveira{% endblock %}
 {% block breadcrumb %}Sobre{% endblock %}
 {% block pagina %}
@@ -10,7 +11,7 @@
 
 <section class="p3-about-layout" aria-labelledby="p3-profile-heading">
     <aside class="p3-profile">
-        <span class="p3-monogram" aria-hidden="true">DO<span>↗</span></span>
+        <img class="p11-about-brand" src="{% static 'img/brand/banner-claro-640.webp' %}" alt="Monograma DO e nome Danilo Oliveira" width="640" height="360">
         <p class="p3-eyebrow">Prazer, me chamo</p>
         <h2 id="p3-profile-heading">Danilo Oliveira</h2>
         <p>Engenheiro de Software e Técnico em Informática.</p>

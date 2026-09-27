@@ -1,16 +1,19 @@
 {% extends "core/base_interna.html" %}
+{% load static %}
 {% block title %}Currículo | Danilo Oliveira{% endblock %}
 {% block breadcrumb %}Currículo{% endblock %}
 {% block pagina %}
 <header class="p3-heading">
-    <p class="p3-eyebrow">Experiência e formação</p>
+    <p class="p3-eyebrow">Experiência, formação e competências</p>
     <h1>Uma trajetória em<br>constante construção.</h1>
-    <p class="p3-lead">Experiências que aproximam pessoas, processos e tecnologia.</p>
+    <p class="p3-lead">Minha trajetória profissional, formação e conhecimentos que aproximam pessoas, processos e tecnologia.</p>
+<a class="p3-button p11-download" href="{% static 'docs/danilo-oliveira-curriculo.pdf' %}" download>Baixar currículo em PDF <span aria-hidden="true">↓</span></a>
 </header>
 
 <div class="p3-resume-layout">
     <section aria-labelledby="p3-experience"><div class="p3-section-title"><span class="p3-eyebrow">Carreira</span><h2 id="p3-experience">Experiência profissional</h2></div>
         <ol class="p3-timeline">
+            <li><span class="p3-date">Atuação atual</span><h3>Tecnologia da Informação e manutenção técnica</h3><span class="p3-company">Ambiente corporativo e atendimento técnico</span><ul><li>Suporte a usuários, diagnóstico de falhas e manutenção de computadores.</li><li>Administração de acessos, infraestrutura Windows e suporte a sistemas corporativos.</li><li>Orientação técnica e organização de procedimentos de TI.</li></ul></li>
             <li><span class="p3-date">Fev/2025 — Mar/2025</span><h3>Analista de Requisitos Jr</h3><span class="p3-company">Integra.do</span><ul><li>Levantamento e documentação de requisitos para integrações ERP–e-commerce.</li><li>Elaboração de user stories e critérios de aceitação.</li><li>Colaboração com Product Owner e stakeholders.</li><li>Uso de Jira e Confluence para organização do backlog.</li></ul></li>
             <li><span class="p3-date">Jan/2024 — Jan/2025</span><h3>Trainee em TI</h3><span class="p3-company">Dechra Brasil</span><ul><li>Desenvolvimento de versões no JDE e gerenciamento de acessos a sistemas.</li><li>Treinamentos de integração para novos colaboradores.</li><li>Criação de SOPs para usuários finais e equipes internas.</li></ul></li>
             <li><span class="p3-date">Jan/2022 — Jan/2024</span><h3>Aprendiz de TI</h3><span class="p3-company">Dechra Brasil</span><ul><li>Suporte técnico e resolução de problemas em ambientes corporativos.</li><li>Administração de Active Directory em ambientes locais e globais.</li></ul></li>
@@ -18,16 +21,19 @@
     </section>
     <div class="p3-resume-aside">
         <section class="p3-card" aria-labelledby="p3-education"><p class="p3-eyebrow">Base acadêmica</p><h2 id="p3-education">Formação</h2>
-            <div class="p3-education"><span class="p3-date">Em andamento</span><h3>Engenharia de Software</h3><p>Universidade Cruzeiro do Sul</p></div>
+            <div class="p3-education"><span class="p3-date">Pós-graduação · Em andamento</span><h3>Ciência de Dados e Inteligência Artificial</h3><p>PUC</p></div>
+            <div class="p3-education"><span class="p3-date">Concluído · 2022 — 2026/1</span><h3>Engenharia de Software</h3><p>Universidade Cruzeiro do Sul</p></div>
             <div class="p3-education"><span class="p3-date">2021 — 2023</span><h3>Técnico em Informática</h3><p>Senac Brasil</p></div>
         </section>
         <section class="p3-card" aria-labelledby="p3-certs"><p class="p3-eyebrow">Aprendizado contínuo</p><h2 id="p3-certs">Certificação e cursos</h2>
+            <div class="p3-education"><span class="p3-date">Em preparação</span><h3>Professional Scrum Master™ I — PSM I</h3><p>Estudos para o exame; certificação ainda não obtida.</p></div>
             <div class="p3-education"><span class="p3-date">Certificação · SFPC™</span><h3>Scrum Foundation Professional</h3></div>
             <div class="p3-education"><span class="p3-date">Extensão · 120 horas</span><h3>Desenvolvimento Ágil de Software</h3><p>Universidade Cruzeiro do Sul</p></div>
             <div class="p3-education"><span class="p3-date">Extensão · 110 horas</span><h3>Analytics, Análise de Dados e Big Data</h3><p>Universidade Cruzeiro do Sul</p></div>
         </section>
     </div>
 </div>
+{% include "core/partials/competencias.html" %}
 {% include "partials/cta_interna.html" %}
 
 {% endblock %}

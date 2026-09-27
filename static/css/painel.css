@@ -8,3 +8,6 @@
 .g-message:target{outline:2px solid #6f9abb;outline-offset:3px;scroll-margin-top:30px}
 
 .g-access-history{margin-top:24px}.g-access-entry{display:flex;align-items:flex-start;flex-direction:column;gap:8px;padding:20px 0;border-top:1px solid var(--g-line,#dce5ed);overflow-wrap:anywhere}.g-access-entry>span:not(.g-tag),.g-access-entry p{font-size:13px;color:#526c80;margin:0}
+
+/* Identidade visual — etapa 11 */
+.g-brand-logo{width:44px;height:44px;object-fit:contain;flex-shrink:0;background:#f7f9fb;padding:3px;border-radius:10px}

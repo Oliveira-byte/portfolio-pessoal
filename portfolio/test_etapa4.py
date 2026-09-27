@@ -112,5 +112,5 @@ class PortfolioEtapa4Tests(TestCase):
             projeto = Projeto.objects.get(slug="com-imagem")
             self.assertTrue(projeto.capa.storage.exists(projeto.capa.name))
             response = self.client.get(projeto.get_absolute_url())
-            self.assertContains(response, projeto.capa.url)
+            self.assertContains(response, reverse("portfolio:projeto_capa", kwargs={"slug": projeto.slug}))
             self.assertContains(response, 'alt="Capa azul"')

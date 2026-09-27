@@ -1,54 +1,16 @@
+{% load static %}
 <footer class="site-footer">
-
-    <div class="container">
-
-        <div class="footer-content">
-
-            <div>
-
-                <strong>
-                    Danilo Oliveira
-                </strong>
-
-                <p>
-                    Software, tecnologia e manutenção de computadores.
-                </p>
-
-            </div>
-
-
-            <div class="footer-social">
-
-                <a href="#" aria-label="LinkedIn">
-                    <i class="bi bi-linkedin"></i>
-                </a>
-
-                <a href="#" aria-label="GitHub">
-                    <i class="bi bi-github"></i>
-                </a>
-
-                {% if contato_whatsapp_url %}<a href="{{ contato_whatsapp_url }}" aria-label="WhatsApp de atendimento"><i class="bi bi-whatsapp"></i></a>{% endif %}
-                <a href="{% url 'core:contato' %}" aria-label="Contato">
-                    <i class="bi bi-envelope"></i>
-                </a>
-
-            </div>
-
-        </div>
-
-
-        <div class="footer-bottom">
-
-            <span>
-                © {% now "Y" %} Danilo Oliveira.
-            </span>
-
-            <span>
-                Todos os direitos reservados.
-            </span>
-
-        </div>
-
-    </div>
-
+ <div class="container">
+  <div class="footer-content">
+   <div class="footer-brand"><a href="{% url 'core:home' %}" aria-label="Danilo Oliveira — início"><img src="{% static 'img/brand/logo-nome.webp' %}" alt="Danilo Oliveira" width="160" height="160" loading="lazy"></a><div><strong>Software e manutenção técnica.</strong><p>Da ideia ao equipamento, um atendimento próximo.</p><p>Londrina, Paraná</p></div></div>
+   <nav class="footer-nav" aria-label="Links do rodapé"><a href="{% url 'core:servicos' %}">Serviços</a><a href="{% url 'core:curriculo' %}">Currículo</a><a href="{% url 'area_cliente:painel' %}">Acompanhar atendimento</a><a href="{% url 'core:contato' %}">Contato</a></nav>
+   <div class="footer-social">
+    <a href="https://www.linkedin.com/in/danilo-oliveira-5444b7204/" aria-label="LinkedIn de Danilo Oliveira"><i class="bi bi-linkedin" aria-hidden="true"></i></a>
+    <a href="https://github.com/Oliveira-byte" aria-label="GitHub de Danilo Oliveira"><i class="bi bi-github" aria-hidden="true"></i></a>
+    {% if contato_whatsapp_url %}<a href="{{ contato_whatsapp_url }}" aria-label="WhatsApp de atendimento"><i class="bi bi-whatsapp" aria-hidden="true"></i></a>{% endif %}
+    <a href="mailto:{{ contato_email }}" aria-label="Enviar e-mail"><i class="bi bi-envelope" aria-hidden="true"></i></a>
+   </div>
+  </div>
+  <div class="footer-bottom"><span>© {% now "Y" %} Danilo Oliveira.</span><span>Todos os direitos reservados.</span></div>
+ </div>
 </footer>

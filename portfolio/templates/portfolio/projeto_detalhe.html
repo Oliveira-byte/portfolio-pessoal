@@ -29,7 +29,7 @@
             {% if projeto.link_site %}<a class="p3-button" href="{{ projeto.link_site }}">Acessar projeto <span aria-hidden="true">↗</span></a>{% endif %}
             {% if projeto.link_repositorio %}<a class="p3-button p4-button-outline" href="{{ projeto.link_repositorio }}">Ver repositório <span aria-hidden="true">↗</span></a>{% endif %}
         </div>
-        {% endif %}
+        {% else %}<p class="p11-link-note">Este projeto ainda não tem um endereço público ou repositório disponível. Conheça o trabalho pela apresentação nesta página.</p>{% endif %}
     </aside>
 </div>
 {% include "partials/cta_interna.html" %}

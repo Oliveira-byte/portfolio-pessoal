@@ -1,0 +1,35 @@
+<form data-form-servico="{{ servico.slug }}" data-titulo="{{ servico.titulo }}" data-grupo="{{ servico.grupo }}" data-email="{{ contato_email }}" data-whatsapp="{{ contato_whatsapp_url }}" hidden>
+    <p class="p3-eyebrow">{{ servico.grupo }}</p>
+    <h2 class="ps-form-titulo" tabindex="-1">{{ servico.titulo }}</h2>
+    <p>{{ servico.descricao }}</p>
+    <p class="ps-ajuda">Campos com * são obrigatórios. Não inclua senhas ou códigos de acesso.</p>
+    <div class="ps-campos">
+    {% for campo in servico.campos %}
+        <div class="ps-campo{% if campo.tipo == 'textarea' %} ps-campo-largo{% endif %}">
+            <label for="{{ servico.slug }}-{{ campo.nome }}">{{ campo.titulo }}{% if campo.obrigatorio %} <span aria-hidden="true">*</span>{% endif %}</label>
+            {% if campo.tipo == 'select' %}
+            <select id="{{ servico.slug }}-{{ campo.nome }}" data-pergunta="{{ campo.titulo }}" {% if campo.obrigatorio %}required{% endif %} {% if campo.dica %}aria-describedby="{{ servico.slug }}-{{ campo.nome }}-dica"{% endif %}><option value="">Selecione{% if not campo.obrigatorio %} (opcional){% endif %}</option>{% for opcao in campo.opcoes %}<option value="{{ opcao }}">{{ opcao }}</option>{% endfor %}</select>
+            {% elif campo.tipo == 'textarea' %}
+            <textarea id="{{ servico.slug }}-{{ campo.nome }}" data-pergunta="{{ campo.titulo }}" rows="3" maxlength="{{ campo.limite }}" {% if campo.obrigatorio %}required{% endif %} {% if campo.dica %}aria-describedby="{{ servico.slug }}-{{ campo.nome }}-dica"{% endif %}></textarea>
+            {% else %}
+            <input type="text" id="{{ servico.slug }}-{{ campo.nome }}" data-pergunta="{{ campo.titulo }}" maxlength="{{ campo.limite }}" {% if campo.nome == 'nome' %}autocomplete="given-name"{% endif %} {% if campo.obrigatorio %}required{% endif %} {% if campo.dica %}aria-describedby="{{ servico.slug }}-{{ campo.nome }}-dica"{% endif %}>
+            {% endif %}
+            {% if campo.dica %}<small id="{{ servico.slug }}-{{ campo.nome }}-dica">{{ campo.dica }}</small>{% endif %}
+        </div>
+    {% endfor %}
+    </div>
+    <button class="p3-button ps-gerar" type="submit">Gerar mensagem <span aria-hidden="true">→</span></button>
+    <p class="ps-ajuda">A mensagem é montada no seu navegador. O envio acontece somente no canal que você escolher.</p>
+    <div class="ps-preview" data-preview hidden>
+        <h3 tabindex="-1">Sua mensagem está pronta</h3>
+        <label for="{{ servico.slug }}-mensagem">Confira os detalhes antes de continuar</label>
+        <textarea id="{{ servico.slug }}-mensagem" data-mensagem readonly rows="10"></textarea>
+        <div class="ps-canais" aria-label="Escolher meio de contato">
+            <a class="p3-button" data-link-email>Continuar por e-mail <span aria-hidden="true">↗</span></a>
+            {% if contato_whatsapp_url %}<a class="p3-button" data-link-whatsapp target="_blank" rel="noopener noreferrer">Continuar pelo WhatsApp <span aria-hidden="true">↗</span></a>{% endif %}
+            <button class="ps-copiar" data-copiar type="button">Copiar mensagem</button>
+        </div>
+        <p class="ps-ajuda">O e-mail abre seu aplicativo de correio. Se o aplicativo não preencher toda a mensagem, use “Copiar mensagem” e cole no contato escolhido.</p>
+        <p class="ps-status" data-status role="status" aria-live="polite"></p>
+    </div>
+</form>
