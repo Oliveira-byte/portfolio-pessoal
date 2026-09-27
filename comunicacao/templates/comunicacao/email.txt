@@ -1,0 +1,20 @@
+Danilo Oliveira | Área do cliente
+
+Olá, {{ nome }}.
+
+{{ titulo }}
+{{ texto }}
+{% if acesso %}
+Seu usuário: {{ usuario }}
+O link é de uso único e vale por {{ validade_horas }} horas após a geração.
+{% endif %}
+{{ botao }}:
+{{ url }}
+{% if acesso %}
+Se você não esperava este e-mail, pode ignorá-lo. Sua senha só será alterada quando você concluir o formulário no site.
+{% else %}
+Por privacidade, o conteúdo das conversas e os anexos ficam disponíveis dentro da sua conta.
+{% endif %}
+Danilo Oliveira
+Software e manutenção técnica
+{{ site_url }}

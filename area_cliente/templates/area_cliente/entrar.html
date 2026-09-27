@@ -17,14 +17,14 @@
         <form method="post" action="{% url 'area_cliente:sair' %}" class="p5-logout">{% csrf_token %}<button class="p5-link-button" type="submit">Sair desta conta</button></form>
         {% else %}
         <p class="p3-eyebrow">Bem-vindo</p><h2 id="p5-form-title">Entre na sua conta</h2>
-        <p>Utilize os dados de acesso fornecidos para você.</p>
+        <p>Utilize seu usuário e a senha definida para sua conta.</p>
         <form method="post" action="{% url 'area_cliente:entrar' %}">
             {% csrf_token %}
             {% include "area_cliente/partials/campos_form.html" %}
             {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
             <button type="submit" class="p3-button p5-full">Entrar <span aria-hidden="true">→</span></button>
         </form>
-        <p class="p5-assistance">Precisa de acesso ou esqueceu sua senha?<br><a href="{% url 'core:contato' %}">Entre em contato</a>.</p>
+        <p class="p5-assistance"><a href="{% url 'area_cliente:recuperar_acesso' %}">Esqueci minha senha</a><br>Seu acesso é criado após combinar o atendimento. <a href="{% url 'core:contato' %}">Fale comigo</a>.</p>
         {% endif %}
     </section>
 </div>

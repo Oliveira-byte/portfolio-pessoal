@@ -7,6 +7,10 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.paginator import Paginator
 from django.db import transaction
 from django.db.models import Count, Q
+from django.conf import settings
+from django.core.exceptions import PermissionDenied, ValidationError
+from comunicacao.models import EntregaEmail
+from comunicacao.services import solicitar_acesso, processar_entrega
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
@@ -115,10 +119,12 @@ def cliente_form(request, pk=None):
     if request.method == "POST" and form.is_valid():
         with transaction.atomic():
             obj = form.save()
+            if not pk and obj.acesso_pendente:
+                solicitar_acesso(obj)
             registrar(request, obj, "Cadastro do cliente atualizado." if pk else "Cliente cadastrado pelo painel.", CHANGE if pk else ADDITION)
-        messages.success(request, "Cliente salvo.")
+        messages.success(request, "Cliente salvo. Confira o estado do convite abaixo." if not pk and obj.acesso_pendente else "Cliente salvo.")
         return redirect("painel:cliente", pk=obj.pk)
-    return formulario(request, form, "Editar cliente" if pk else "Cadastrar cliente", reverse("painel:clientes"), "clientes", "O acesso é individual. Permissões administrativas não são atribuídas neste cadastro.", 400 if request.method == "POST" else 200)
+    return formulario(request, form, "Editar cliente" if pk else "Cadastrar cliente", reverse("painel:clientes"), "clientes", "No modo convite, o cliente define a própria senha pelo link enviado ao e-mail cadastrado. Os campos de senha são usados somente no modo manual.", 400 if request.method == "POST" else 200)
 
 
 @equipe_required
@@ -127,7 +133,7 @@ def cliente_detalhe(request, pk):
     exigir(request.user, get_user_model())
     obj = get_object_or_404(clientes_gerenciaveis(), pk=pk)
     qs = atendimentos_permitidos(request.user).filter(cliente=obj)
-    return tela(request, "cliente.html", {"secao": "clientes", "cliente": obj, "atendimentos": pagina(request, qs)})
+    return tela(request, "cliente.html", {"secao": "clientes", "cliente": obj, "atendimentos": pagina(request, qs), "emails_acesso": obj.entregas_email.filter(tipo__in=("acesso", "senha"))[:5]})
 
 
 @equipe_required
@@ -419,3 +425,53 @@ def abrir_mensagem(request, pk):
     anteriores_na_lista = item.solicitacao.mensagens.filter(Q(criado_em__gt=item.criado_em) | Q(criado_em=item.criado_em, pk__gt=item.pk)).count()
     numero = anteriores_na_lista // 30 + 1
     return redirect(reverse("painel:atendimento", args=[item.solicitacao_id]) + f"?conversa={numero}#mensagem-{item.pk}")
+
+
+@equipe_required
+@require_http_methods(["GET", "POST"])
+def cliente_convite(request, pk):
+    exigir(request.user, get_user_model(), "change")
+    obj = get_object_or_404(clientes_gerenciaveis(), pk=pk)
+    if request.method == "POST":
+        try:
+            with transaction.atomic():
+                entrega = solicitar_acesso(obj, renovar=True)
+                registrar(request, obj, "Link de acesso solicitado pelo painel.")
+            entrega.refresh_from_db()
+            messages.success(request, "Solicitação registrada: " + entrega.get_estado_display() + ".")
+        except ValidationError as exc:
+            messages.error(request, " ".join(exc.messages))
+        return redirect("painel:cliente", pk=pk)
+    return tela(request, "convite.html", {"secao": "clientes", "cliente": obj})
+
+
+@equipe_required
+@require_GET
+def emails(request):
+    if not request.user.is_superuser:
+        raise PermissionDenied
+    qs = EntregaEmail.objects.select_related("cliente")
+    estado = request.GET.get("estado", "")
+    if estado in EntregaEmail.Estado.values:
+        qs = qs.filter(estado=estado)
+    backend = settings.MAILERS["default"]["BACKEND"]
+    return tela(request, "emails.html", {"secao": "emails", "emails": pagina(request, qs),
+        "estado": estado, "estados": EntregaEmail.Estado.choices,
+        "modo_console": backend != "django.core.mail.backends.smtp.EmailBackend",
+        "envio_imediato": settings.EMAIL_ENVIO_IMEDIATO, "equipe_configurada": bool(settings.EMAIL_EQUIPE)})
+
+
+@equipe_required
+@require_POST
+def email_repetir(request, pk):
+    if not request.user.is_superuser:
+        raise PermissionDenied
+    obj = get_object_or_404(EntregaEmail, pk=pk)
+    if obj.estado in ("pendente", "falha"):
+        processar_entrega(obj.pk)
+        obj.refresh_from_db()
+        registrar(request, obj, "Processamento de e-mail solicitado pelo painel.")
+        messages.info(request, obj.get_estado_display() + ". " + obj.resultado)
+    else:
+        messages.info(request, "Este registro já foi processado. Para renovar um link, use o cadastro do cliente.")
+    return redirect("painel:emails")

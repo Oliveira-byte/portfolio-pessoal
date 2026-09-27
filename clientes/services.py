@@ -6,8 +6,9 @@ from .models import AtualizacaoSolicitacao, OrdemManutencao
 @transaction.atomic
 def salvar_atendimento(obj, autor, anterior=None):
     obj.save()
+    liberado = bool(anterior and not anterior.visivel_cliente and obj.visivel_cliente)
     if isinstance(obj, OrdemManutencao):
-        if not anterior or anterior.etapa != obj.etapa:
+        if not anterior or anterior.etapa != obj.etapa or liberado:
             AtualizacaoSolicitacao.objects.create(
                 solicitacao=obj, titulo="Etapa da manutenção atualizada" if anterior else "Ordem de serviço cadastrada",
                 mensagem=obj.get_etapa_display(), autor=autor,
@@ -18,7 +19,7 @@ def salvar_atendimento(obj, autor, anterior=None):
                 solicitacao=obj, titulo="Orçamento acordado registrado",
                 mensagem=f"{obj.detalhes_orcamento}\nTotal acordado: R$ " + format(obj.total_acordado, ".2f").replace(".", ","), autor=autor,
             )
-    elif not anterior or anterior.status != obj.status or anterior.progresso != obj.progresso:
+    elif not anterior or anterior.status != obj.status or anterior.progresso != obj.progresso or liberado:
         AtualizacaoSolicitacao.objects.create(
             solicitacao=obj, titulo="Andamento atualizado" if anterior else "Solicitação cadastrada",
             mensagem=f"{obj.get_status_display()} · Progresso informado: {obj.progresso}%.",

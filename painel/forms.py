@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserCreationForm, SetPasswordForm
+from django.contrib.auth.forms import SetPasswordForm
+from django.contrib.auth.password_validation import validate_password
 from clientes.models import Solicitacao, OrdemManutencao, AtualizacaoSolicitacao, ArquivoSolicitacao, MensagemSolicitacao
 from core.models import ConfiguracaoContato
 from portfolio.models import Projeto, Tecnologia
@@ -31,13 +32,67 @@ class EstiloForm:
         return [(titulo, [self[name] for name in names if name in self.fields]) for titulo, names in grupos]
 
 
-class ClienteCriarForm(EstiloForm, UserCreationForm):
+class EmailClienteMixin:
+    def clean_email(self):
+        email = self.cleaned_data.get("email", "").strip()
+        if email and get_user_model().objects.filter(email__iexact=email).exclude(pk=self.instance.pk).exists():
+            raise forms.ValidationError("Este e-mail já está associado a outra conta. Use um e-mail exclusivo para o cliente.")
+        return email
+
+
+class ClienteCriarForm(EmailClienteMixin, EstiloForm, forms.ModelForm):
+    modo_acesso = forms.ChoiceField(label="Como o cliente receberá o acesso?", required=False,
+        choices=(("convite", "Convite por e-mail — cliente define a senha"), ("manual", "Definir senha manualmente")), initial="convite")
+    password1 = forms.CharField(label="Senha inicial (somente no modo manual)", required=False, widget=forms.PasswordInput)
+    password2 = forms.CharField(label="Confirme a senha inicial", required=False, widget=forms.PasswordInput)
+    grupos = (("Dados do cliente", ("first_name", "last_name", "email", "username")),
+              ("Acesso à conta", ("modo_acesso", "password1", "password2")))
+
     class Meta:
         model = get_user_model()
-        fields = ("first_name", "last_name", "email", "username", "password1", "password2")
+        fields = ("first_name", "last_name", "email", "username", "modo_acesso", "password1", "password2")
+
+    def clean_username(self):
+        username = self.cleaned_data["username"]
+        if get_user_model().objects.filter(username__iexact=username).exists():
+            raise forms.ValidationError("Já existe uma conta com este usuário.")
+        return username
+
+    def clean(self):
+        data = super().clean()
+        # Mantém compatibilidade com formulários da etapa anterior que enviam senhas.
+        modo = data.get("modo_acesso") or ("manual" if data.get("password1") else "convite")
+        data["modo_acesso"] = modo
+        if modo == "convite" and not data.get("email"):
+            self.add_error("email", "Informe o e-mail do cliente para preparar o convite.")
+        if modo == "manual":
+            if not data.get("password1"):
+                self.add_error("password1", "Informe a senha inicial.")
+            if data.get("password1") != data.get("password2"):
+                self.add_error("password2", "As senhas não coincidem.")
+        return data
+
+    def _post_clean(self):
+        super()._post_clean()
+        if self.cleaned_data.get("modo_acesso") == "manual" and self.cleaned_data.get("password1"):
+            try:
+                validate_password(self.cleaned_data["password1"], self.instance)
+            except forms.ValidationError as error:
+                self.add_error("password1", error)
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.acesso_pendente = self.cleaned_data["modo_acesso"] == "convite"
+        if user.acesso_pendente:
+            user.set_unusable_password()
+        else:
+            user.set_password(self.cleaned_data["password1"])
+        if commit:
+            user.save()
+        return user
 
 
-class ClienteEditarForm(EstiloForm, forms.ModelForm):
+class ClienteEditarForm(EmailClienteMixin, EstiloForm, forms.ModelForm):
     class Meta:
         model = get_user_model()
         fields = ("first_name", "last_name", "email", "username", "is_active")
@@ -45,7 +100,9 @@ class ClienteEditarForm(EstiloForm, forms.ModelForm):
 
 
 class SenhaClienteForm(EstiloForm, SetPasswordForm):
-    pass
+    def save(self, commit=True):
+        self.user.acesso_pendente = False
+        return super().save(commit=commit)
 
 
 class AtendimentoForm(EstiloForm, forms.ModelForm):

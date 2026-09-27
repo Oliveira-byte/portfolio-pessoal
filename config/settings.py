@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-r0_+^exuo8+kr=lzz6t3_t0b4m(27a271yq%#v%e&2@e7)40u!'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-r0_+^exuo8+kr=lzz6t3_t0b4m(27a271yq%#v%e&2@e7)40u!')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -40,6 +41,7 @@ INSTALLED_APPS = [
 
     # Apps do projeto
     "accounts",
+    "comunicacao.apps.ComunicacaoConfig",
     "core",
     "portfolio",
     "clientes",
@@ -131,14 +133,26 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
-# Email
-# https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
-
-MAILERS = {
-    'default': {
-        'BACKEND': 'django.core.mail.backends.console.EmailBackend',
-    },
-}
+# E-mail: modo console por padrão. Credenciais somente no ambiente.
+SITE_URL = os.environ.get("SITE_URL", "http://127.0.0.1:8000").rstrip("/")
+DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "nao-responda@example.com")
+EMAIL_REPLY_TO = os.environ.get("EMAIL_REPLY_TO", "")
+EMAIL_EQUIPE = os.environ.get("EMAIL_EQUIPE", "")
+SMTP_HOST = os.environ.get("EMAIL_HOST", "")
+SMTP_PORT = int(os.environ.get("EMAIL_PORT", "587"))
+SMTP_USE_TLS = os.environ.get("EMAIL_USE_TLS", "true").lower() == "true"
+SMTP_USE_SSL = os.environ.get("EMAIL_USE_SSL", "false").lower() == "true"
+EMAIL_ENVIO_IMEDIATO = os.environ.get("EMAIL_ENVIO_IMEDIATO", "true").lower() == "true"
+EMAIL_NOTIFICACOES_ATIVAS = os.environ.get("EMAIL_NOTIFICACOES_ATIVAS", "true").lower() == "true"
+PASSWORD_RESET_TIMEOUT = 60 * 60 * 24
+MAILERS = {"default": {"BACKEND": os.environ.get("EMAIL_BACKEND", "django.core.mail.backends.console.EmailBackend")}}
+if MAILERS["default"]["BACKEND"] == "django.core.mail.backends.smtp.EmailBackend":
+    MAILERS["default"]["OPTIONS"] = {
+        "host": SMTP_HOST, "port": SMTP_PORT,
+        "username": os.environ.get("EMAIL_HOST_USER", ""),
+        "password": os.environ.get("EMAIL_HOST_PASSWORD", ""),
+        "use_tls": SMTP_USE_TLS, "use_ssl": SMTP_USE_SSL, "timeout": 10,
+    }
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"

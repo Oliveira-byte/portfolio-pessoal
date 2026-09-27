@@ -3,6 +3,9 @@ from . import views
 
 app_name = "painel"
 urlpatterns = [
+    path("emails/", views.emails, name="emails"),
+    path("emails/<int:pk>/repetir/", views.email_repetir, name="email_repetir"),
+    path("clientes/<int:pk>/convite/", views.cliente_convite, name="cliente_convite"),
     path("", views.inicio, name="inicio"),
     path("entrar/", views.EntrarView.as_view(), name="entrar"),
     path("sair/", views.SairView.as_view(), name="sair"),
