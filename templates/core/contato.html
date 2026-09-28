@@ -2,13 +2,19 @@
 {% block title %}Contato | Danilo Oliveira{% endblock %}
 {% block breadcrumb %}Contato{% endblock %}
 {% load static %}
-{% block extra_css %}{{ block.super }}<link rel="stylesheet" href="{% static 'css/manutencao.css' %}">{% endblock %}
+{% block extra_css %}{{ block.super }}<link rel="stylesheet" href="{% static 'css/manutencao.css' %}"><link rel="stylesheet" href="{% static 'css/servicos.css' %}">{% endblock %}
 {% block pagina %}
 <header class="p3-heading">
     <p class="p3-eyebrow">Vamos conversar</p>
     <h1>Toda solução começa<br>com uma boa conversa.</h1>
     <p class="p3-lead">Precisa desenvolver uma solução ou cuidar do seu computador? Vamos conversar sobre o atendimento.</p>
+    <button class="p3-button pi-contact-start" type="button" data-servico="contato" aria-controls="preparar-contato" aria-haspopup="dialog" hidden>Preparar mensagem <span aria-hidden="true">↗</span></button>
+    <p class="pi-help" data-pi-contact-help hidden>Preencha os detalhes, confira a mensagem e escolha e-mail ou WhatsApp.</p>
 </header>
+<dialog id="preparar-contato" class="ps-modal pi-modal" aria-label="Preparar mensagem de contato">
+    <div class="ps-modal-bar"><span>Vamos conversar</span><button type="button" class="ps-fechar" data-fechar aria-label="Fechar formulário"><span aria-hidden="true">×</span></button></div>
+    <div class="ps-painel">{% include "core/partials/formulario_servico.html" with servico=formulario_contato %}</div>
+</dialog>
 
 <div class="p3-contact-layout">
     <section class="p3-contact-panel" aria-labelledby="p3-contact-heading"><p class="p3-eyebrow">Contato direto</p><h2 id="p3-contact-heading">Conte o que você<br>tem em mente.</h2><p>Para desenvolvimento, conte sua ideia e o objetivo. Para manutenção, informe se é computador ou notebook e descreva o problema.</p><div class="p3-contact-location"><span aria-hidden="true">↗</span><div><strong>Londrina, Paraná</strong><span>Brasil</span></div></div></section>
@@ -23,3 +29,5 @@
 
 <section class="p3-card pm-contact-extra"><p class="p3-eyebrow">Computadores e notebooks</p><h2>Coleta e entrega combinadas com você.</h2><p>Local, disponibilidade, horários e eventuais custos são definidos por contato antes do atendimento. Depois, as informações combinadas ficam registradas na sua ordem de serviço.</p><a class="p3-text-link" href="{% url 'core:servicos' %}">Conhecer os serviços <span aria-hidden="true">↗</span></a></section>
 {% endblock %}
+
+{% block extra_js %}{{ block.super }}<script src="{% static 'js/servicos.js' %}" defer></script>{% endblock %}

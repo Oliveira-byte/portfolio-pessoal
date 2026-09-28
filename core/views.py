@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render
 from django.urls import reverse
-from .servicos_catalogo import SERVICOS
+from .servicos_catalogo import SERVICOS, CONTATO
 
 
 def home(request):
@@ -20,7 +20,7 @@ def competencias(request):
 
 
 def contato(request):
-    return render(request, "core/contato.html")
+    return render(request, "core/contato.html", {"formulario_contato": CONTATO})
 
 
 def servicos(request):

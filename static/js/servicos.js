@@ -2,19 +2,20 @@
 (function () {
     "use strict";
 
-    function criarMensagem(grupo, titulo, respostas) {
+    function criarMensagem(grupo, titulo, respostas, modo = "servico") {
         const linhas = respostas
             .map(({ pergunta, valor }) => ({ pergunta, valor: String(valor).trim() }))
             .filter(({ valor }) => valor)
             .map(({ pergunta, valor }) => `${pergunta}: ${valor}`);
+        if (modo === "contato") return ["Olá, Danilo! Gostaria de conversar com você.", "", ...linhas].join("\n");
         return ["Olá, Danilo! Gostaria de conversar sobre este serviço.", "",
             `Área: ${grupo}`, `Serviço: ${titulo}`, "", ...linhas, "",
             "Pode me orientar sobre a avaliação, os valores e a disponibilidade?"].join("\n");
     }
 
-    function criarLinks(email, whatsapp, titulo, mensagem) {
+    function criarLinks(email, whatsapp, titulo, mensagem, modo = "servico") {
         const links = {
-            email: `mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent(`Solicitação de serviço - ${titulo}`)}&body=${encodeURIComponent(mensagem.replace(/\r?\n/g, "\r\n"))}`,
+            email: `mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent(`${modo === "contato" ? "Contato" : "Solicitação de serviço"} - ${titulo}`)}&body=${encodeURIComponent(mensagem.replace(/\r?\n/g, "\r\n"))}`,
             whatsapp: ""
         };
         if (/^https:\/\/wa\.me\/\d{10,15}$/.test(whatsapp)) {
@@ -30,8 +31,7 @@
         const botoes = [...doc.querySelectorAll("[data-servico]")];
         const janela = doc.defaultView;
         const movimentoReduzido = () => janela.matchMedia && janela.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        let atual = null;
-        let fechamento = null;
+
         const rolar = (elemento) => {
             if (elemento.scrollIntoView) elemento.scrollIntoView({ block: "start", behavior: movimentoReduzido() ? "instant" : "smooth" });
         };
@@ -42,12 +42,14 @@
             aviso.className = "p3-card ps-sem-js";
             aviso.textContent = "Para preencher os formulários, atualize seu navegador ou ";
             const contato = doc.createElement("a");
-            contato.href = doc.querySelector("#desenvolvimento a").href;
+            contato.href = doc.querySelector("#desenvolvimento a, .p3-contact-link[href]").href;
             contato.textContent = "acesse os canais de contato.";
             aviso.appendChild(contato);
             painel.before(aviso);
             return;
         }
+        const controle = janela.PublicoUI && janela.PublicoUI.modal(painel);
+        if (!controle) return;
         doc.querySelectorAll("[data-opcoes]").forEach((botao) => {
             const opcoes = doc.getElementById(botao.dataset.opcoes);
             if (!opcoes) return;
@@ -69,50 +71,18 @@
                 animacao.onfinish = () => { opcoes.hidden = !abrir; animacao = null; };
             });
         });
-        function finalizarFechamento() {
-            janela.clearTimeout(fechamento);
-            fechamento = null;
-            painel.classList.remove("ps-saindo");
-            painel.close();
-        }
-        function fechar() {
-            if (!painel.open || fechamento !== null) return;
-            if (movimentoReduzido()) { finalizarFechamento(); return; }
-            painel.classList.add("ps-saindo");
-            fechamento = janela.setTimeout(finalizarFechamento, 180);
-        }
-        painel.addEventListener("close", () => {
-            janela.clearTimeout(fechamento);
-            fechamento = null;
-            painel.classList.remove("ps-saindo");
-            doc.body.classList.remove("ps-modal-aberto");
-            if (atual) atual.focus({ preventScroll: true });
-        });
-        painel.addEventListener("cancel", (evento) => { evento.preventDefault(); fechar(); });
-        painel.querySelector("[data-fechar]").addEventListener("click", fechar);
-        let iniciouFora = false;
-        const fora = (evento) => {
-            const r = painel.getBoundingClientRect();
-            return evento.target === painel && (evento.clientX < r.left || evento.clientX > r.right || evento.clientY < r.top || evento.clientY > r.bottom);
-        };
-        painel.addEventListener("pointerdown", (evento) => { iniciouFora = fora(evento); });
-        painel.addEventListener("click", (evento) => {
-            if (iniciouFora && fora(evento)) fechar();
-            iniciouFora = false;
-        });
         botoes.forEach((botao) => {
             const form = formularios.find((item) => item.dataset.formServico === botao.dataset.servico);
             if (!form) return;
             botao.disabled = false;
+            botao.hidden = false;
+            const ajuda = doc.querySelector("[data-pi-contact-help]");
+            if (ajuda) ajuda.hidden = false;
             botao.addEventListener("click", () => {
-                atual = botao;
                 formularios.forEach((item) => { item.hidden = item !== form; });
                 const titulo = form.querySelector(".ps-form-titulo");
                 painel.setAttribute("aria-labelledby", titulo.id);
-                doc.body.classList.add("ps-modal-aberto");
-                painel.showModal();
-                painel.scrollTop = 0;
-                titulo.focus({ preventScroll: true });
+                controle.open(botao, titulo);
             });
         });
         formularios.forEach((form) => {
@@ -150,8 +120,10 @@
                 ));
                 if (!form.reportValidity()) { limparPreview(); return; }
                 const mensagem = criarMensagem(form.dataset.grupo, form.dataset.titulo,
-                    campos.map((campo) => ({ pergunta: campo.dataset.pergunta, valor: campo.value })));
-                const links = criarLinks(form.dataset.email, form.dataset.whatsapp, form.dataset.titulo, mensagem);
+                    campos.map((campo) => ({ pergunta: campo.dataset.pergunta, valor: campo.value })), form.dataset.modo);
+                const assunto = form.querySelector('[data-pergunta="Assunto"]');
+                const tituloEmail = assunto ? assunto.value : form.dataset.titulo;
+                const links = criarLinks(form.dataset.email, form.dataset.whatsapp, tituloEmail, mensagem, form.dataset.modo);
                 texto.value = mensagem;
                 email.href = links.email;
                 if (whatsapp) {

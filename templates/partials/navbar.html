@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="{% static 'css/navbar-visivel.css' %}">
 <nav class="navbar navbar-light site-navbar navbar-sempre-visivel" aria-label="Navegação principal">
     <div class="container">
-        <a class="navbar-brand brand" href="{% url 'core:home' %}"><img class="brand-logo" src="{% static 'img/brand/logo-simples.webp' %}" alt="" width="64" height="48"><span class="brand-copy"><span class="brand-name">Danilo Oliveira</span><small class="brand-subtitle">Software e Manutenção Técnica</small></span></a>
+        <a class="navbar-brand brand" href="{% url 'core:home' %}"><img class="brand-logo" src="{% static 'img/brand/logo-simples.webp' %}" alt="" width="64" height="48"><span class="brand-copy"><span class="brand-name">Danilo Oliveira</span><small class="brand-subtitle">Software e Hardware</small></span></a>
         <div class="np-acoes"><ul class="navbar-nav np-links"><li class="nav-item"><a class="nav-link{% if request.resolver_match.view_name == "core:home" %} active{% endif %}" href="{% url 'core:home' %}" {% if request.resolver_match.view_name == "core:home" %}aria-current="page"{% endif %}>Início</a></li>
 <li class="nav-item"><a class="nav-link{% if request.resolver_match.view_name == 'core:servicos' %} active{% endif %}" href="{% url 'core:servicos' %}" {% if request.resolver_match.view_name == 'core:servicos' %}aria-current="page"{% endif %}>Serviços</a></li>
 <li class="nav-item"><a class="nav-link{% if request.resolver_match.view_name == "core:sobre" %} active{% endif %}" href="{% url 'core:sobre' %}" {% if request.resolver_match.view_name == "core:sobre" %}aria-current="page"{% endif %}>Sobre</a></li>

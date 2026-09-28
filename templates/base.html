@@ -10,7 +10,7 @@
 
     <meta name="description" content="{{ seo_descricao }}">
     <meta name="theme-color" content="#032e53">
-    <link rel="icon" href="{% static 'img/brand/favicon.ico' %}" sizes="any">
+    <link rel="icon" href="{% static 'img/brand/siteicon.ico' %}" sizes="any">
     <link rel="icon" type="image/png" href="{% static 'img/brand/favicon.png' %}">
     {% if seo_publico %}
     <link rel="canonical" href="{{ seo_canonical }}">
@@ -80,10 +80,11 @@
     {% block extra_css %}
     {% endblock %}
     <link rel="stylesheet" href="{% static 'css/tema.css' %}">
+    {% if seo_publico %}<link rel="stylesheet" href="{% static 'css/publico-interativo.css' %}">{% endif %}
 
 </head>
 
-<body>
+<body{% if seo_publico %} data-publico-interativo{% endif %}>
     <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
 
     {% include "partials/navbar.html" %}
@@ -102,6 +103,11 @@
 
     <!-- JS -->
     <script src="{% static 'js/main.js' %}"></script>
+
+    {% if seo_publico %}
+        {% include "partials/modal_publico.html" %}
+        <script src="{% static 'js/publico-interativo.js' %}" defer></script>
+    {% endif %}
 
     {% block extra_js %}
     {% endblock %}

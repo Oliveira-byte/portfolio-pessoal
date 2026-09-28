@@ -1,0 +1,84 @@
+/* Componentes exclusivos das páginas públicas. */
+[data-publico-interativo] .pi-detail-button {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-height: 44px; margin-top: 16px; padding: 9px 16px;
+    border: 1px solid var(--brand-secondary); border-radius: 10px;
+    background: var(--brand-white); color: var(--brand-base);
+    font: inherit; font-size: 13px; font-weight: 650; cursor: pointer;
+    transition: transform 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
+}
+[data-publico-interativo] .pi-detail-button:hover { background: var(--brand-soft); }
+[data-publico-interativo] .pi-detail-button:active { transform: translateY(1px); }
+[data-publico-interativo] .pi-summary { margin: 12px 0 0; font-size: 14px; line-height: 1.75; }
+[data-pi-original][hidden] { display: none !important; }
+[data-publico-interativo] .p3-contact-link {
+    transition: background-color 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+}
+[data-publico-interativo] .p3-contact-link .p3-arrow { transition: transform 200ms ease; }
+.pi-contact-start { margin-top: 16px; }
+.pi-help { margin-top: 12px; font-size: 13px; color: var(--brand-text); }
+[data-publico-interativo] [data-servico][hidden], .pi-help[hidden] { display: none !important; }
+body.pi-modal-aberto { overflow: hidden; }
+.pi-modal {
+    --p3-blue: var(--brand-base); --p3-dark: var(--brand-base); --p3-ink: var(--brand-base);
+    --p3-muted: var(--brand-text); --p3-pale: var(--brand-surface); --p3-line: var(--brand-line);
+    width: min(760px, calc(100% - 48px)); max-width: none; max-height: calc(100dvh - 32px);
+    margin: auto; padding: 0; border: 1px solid var(--brand-line); border-radius: 20px;
+    background: var(--brand-white); color: var(--brand-base);
+    box-shadow: 0 24px 80px rgba(3,46,83,.3); overscroll-behavior: contain;
+    font-family: inherit; line-height: 1.65;
+}
+.pi-modal::backdrop { background: rgba(3,46,83,.72); }
+.pi-modal[open] { animation: pi-open 220ms ease; }
+.pi-modal[open]::backdrop { animation: pi-fade 220ms ease; }
+.pi-modal.pi-saindo { animation: pi-close 180ms ease forwards; }
+.pi-modal.pi-saindo::backdrop { animation: pi-close 180ms ease forwards; }
+.pi-modal-bar, .pi-modal .ps-modal-bar {
+    position: sticky; top: 0; z-index: 1; display: flex; justify-content: space-between;
+    align-items: center; gap: 16px; padding: 12px 20px; background: var(--brand-surface);
+    border-bottom: 1px solid var(--brand-line); color: var(--brand-base); font-size: 13px; font-weight: 600;
+}
+.pi-close, .pi-modal .ps-fechar {
+    display: grid; place-items: center; flex-shrink: 0; width: 44px; height: 44px;
+    padding: 0; border: 1px solid var(--brand-secondary); border-radius: 50%;
+    background: var(--brand-white); color: var(--brand-base); font-size: 27px; line-height: 1;
+    cursor: pointer; transition: background-color 180ms ease;
+}
+.pi-close:hover, .pi-modal .ps-fechar:hover { background: var(--brand-soft); }
+.pi-modal-content, .pi-modal .ps-painel { margin: 0; padding: 28px 32px 32px; }
+.pi-modal-content h2 { font-size: clamp(24px, 3vw, 30px); line-height: 1.25; margin: 0 0 24px; overflow-wrap: anywhere; scroll-margin-top: 90px; }
+.pi-modal-content h2:focus { outline: none; }
+.pi-modal-content p, .pi-modal-content li { font-size: 16px; color: var(--brand-text); }
+.pi-detail-copy .p3-index, .pi-detail-copy .p3-date, .pi-detail-copy .p3-company { display: block; margin-bottom: 12px; }
+.pi-detail-copy ul:not(.p3-tags) { padding-left: 22px; }
+.pi-detail-copy li + li { margin-top: 8px; }
+.pi-detail-copy .p3-tags { margin-block: 20px; }
+.pi-detail-copy .p3-application { margin-top: 24px; }
+.pi-project-preview .p4-cover-photo, .pi-project-preview .p3-project-cover { border-radius: 12px; overflow: hidden; }
+.pi-project-preview .p3-project-body { padding: 24px 0 0; }
+.pi-project-preview img { max-width: 100%; }
+.pi-image-modal { width: min(1180px, calc(100% - 48px)); }
+.pi-full-image { display: block; width: 100%; height: auto; object-fit: contain; }
+.pi-enlarge { margin-bottom: 12px; }
+@keyframes pi-open { from { opacity: 0; transform: translateY(14px) scale(.98); } to { opacity: 1; transform: none; } }
+@keyframes pi-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pi-close { to { opacity: 0; } }
+@media (hover:hover) and (pointer:fine) {
+    [data-publico-interativo] .pi-detail-button:hover { transform: translateY(-2px); }
+    [data-publico-interativo] .p3-contact-link:hover { transform: translateY(-3px); background: var(--brand-surface); }
+    [data-publico-interativo] .p3-contact-link:hover .p3-arrow { transform: translate(2px, -2px); }
+}
+@media(max-width:600px) {
+    .pi-modal, .pi-image-modal { width: calc(100% - 32px); max-height: calc(100dvh - 16px); border-radius: 16px; }
+    .pi-modal-content, .pi-modal .ps-painel { padding: 22px 18px; }
+    .pi-modal-bar, .pi-modal .ps-modal-bar { padding: 10px 16px; }
+    .pi-modal-content p, .pi-modal-content li { font-size: 15px; }
+}
+@media(prefers-reduced-motion:reduce) {
+    .pi-modal, .pi-modal::backdrop, .pi-detail-button, .p3-contact-link, .p3-arrow { animation: none !important; transition: none !important; }
+}
+@media print {
+    [data-pi-original][hidden] { display: block !important; }
+    .pi-summary, .pi-detail-button, .pi-modal, .pi-contact-start, .pi-help { display: none !important; }
+    body.pi-modal-aberto { overflow: visible; }
+}

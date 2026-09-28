@@ -64,3 +64,17 @@ SERVICOS = [
         campo("ferramentas", "Sistemas ou ferramentas envolvidos", dica="Opcional."),
         campo("contexto", "Como funciona hoje?", "textarea", False, limite=300)]),
 ]
+
+
+CONTATO = {
+    "slug": "contato", "titulo": "Prepare sua mensagem", "grupo": "Contato", "modo": "contato",
+    "descricao": "Conte o que você precisa e escolha por onde continuar a conversa.",
+    "campos": [
+        campo("nome", "Seu nome", obrigatorio=True, limite=80),
+        campo("assunto", "Assunto", "select", True,
+              ("Desenvolvimento de um projeto", "Serviço digital", "Manutenção de computador ou notebook",
+               "Oportunidade profissional", "Outro assunto")),
+        campo("mensagem", "O que você precisa?", "textarea", True, limite=1200),
+        campo("prazo", "Prazo ou disponibilidade", limite=100, dica="Opcional. Informe se há alguma data importante."),
+    ],
+}
