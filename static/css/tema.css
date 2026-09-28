@@ -1,0 +1,124 @@
+/* Paleta compartilhada por páginas públicas, portal, painel e administração. */
+:root {
+    --brand-base: #032e53;
+    --brand-secondary: #5886b2;
+    --brand-background: #dadee2;
+    --brand-text: #173f62;
+    --brand-muted: #173f62;
+    --brand-line: #9bafc2;
+    --brand-soft: #d7e2ec;
+    --brand-surface: #eaf0f5;
+    --brand-white: #ffffff;
+    --color-primary: var(--brand-base);
+    --color-primary-dark: var(--brand-base);
+    --color-primary-light: var(--brand-soft);
+    --color-background: var(--brand-background);
+    --color-surface: var(--brand-surface);
+    --color-dark: var(--brand-base);
+    --color-text: var(--brand-text);
+    --color-muted: var(--brand-muted);
+    --color-white: var(--brand-white);
+    --color-border: var(--brand-line);
+    --g-bg: var(--brand-background);
+    --g-ink: var(--brand-base);
+    --g-muted: var(--brand-muted);
+    --g-line: var(--brand-line);
+    --g-blue: var(--brand-base);
+    --g-dark: var(--brand-base);
+    --g-white: var(--brand-white);
+}
+body, .p3-page, .g-workspace { background: var(--brand-background); }
+.p3-page {
+    --p3-blue: var(--brand-base);
+    --p3-dark: var(--brand-base);
+    --p3-ink: var(--brand-base);
+    --p3-muted: var(--brand-muted);
+    --p3-line: var(--brand-secondary);
+    --p3-pale: var(--brand-surface);
+}
+.p11-hero { background: var(--brand-background); }
+.p11-intro h1 span, .p11-lead, .p11-client-note { color: var(--brand-text); }
+.p11-intro h1 { color: var(--brand-base); }
+.p11-background, .p11-identity { background-color: var(--brand-base); }
+.site-navbar { background: var(--brand-white); border-bottom-color: var(--brand-line); }
+.site-navbar .brand { gap: 10px; letter-spacing: -.025em; }
+.brand-copy { display: flex; flex-direction: column; gap: 4px; line-height: 1.25; }
+.brand-name { font-size: 18px; color: var(--brand-base); }
+.brand-subtitle { font-size: 11px; font-weight: 500; letter-spacing: 0; color: var(--brand-muted); }
+/* As imagens continuam transparentes, sem cartão ou preenchimento por trás. */
+.footer-brand > a, .p11-login-logo, .g-brand-logo { background: transparent; padding: 0; border-radius: 0; }
+.site-footer { background: var(--brand-base); color: var(--brand-white); padding: 28px 0 20px; }
+.footer-content { gap: 24px; }
+.footer-brand { gap: 22px; }
+.footer-brand img { width: 150px; height: auto; }
+.footer-content .footer-brand strong { font-size: 15px; color: var(--brand-base); }
+.footer-brand p { font-size: 12px; line-height: 1.6; margin: 6px 0 0; color: var(--brand-text); }
+.footer-nav { gap: 3px; }
+.footer-nav a { color: var(--brand-base); font-size: 12px; }
+.footer-social { gap: 10px; }
+.footer-social a { width: 40px; height: 40px; background: transparent; border: 1px solid var(--brand-secondary); color: var(--brand-base); }
+.footer-social a:hover { color: var(--brand-white); background: var(--brand-base); }
+.footer-bottom { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--brand-line); color: var(--brand-text); font-size: 11px; }
+/* Contraste para ações e informações sobre fundos claros. */
+.btn-outline-custom { border-color: var(--brand-base); color: var(--brand-base); }
+.btn-outline-custom:hover { background: var(--brand-white); color: var(--brand-base); }
+.btn-client-area, .btn-primary-custom, .p3-button, .g-button { background: var(--brand-base); color: var(--brand-white); }
+.btn-client-area:hover, .btn-primary-custom:hover, .g-button:hover { background: var(--brand-text); color: var(--brand-white); }
+.p3-button-white, .g-button-light { background: var(--brand-white); color: var(--brand-base); }
+.p3-button:hover, .g-button-light:hover { background: var(--brand-soft); color: var(--brand-base); }
+.g-login-body { background: linear-gradient(130deg, var(--brand-base) 0 40%, var(--brand-background) 40%); }
+/* Superfícies claras para manter o contraste das logos transparentes. */
+.p5-welcome, .g-sidebar { background: var(--brand-soft); color: var(--brand-base); }
+.p5-welcome h1, .p5-welcome p, .p5-welcome .p3-eyebrow,
+.p5-signature > span:last-child, .g-sidebar .g-brand, .g-sidebar .g-brand small,
+.g-sidebar nav a, .g-sidebar-bottom a { color: var(--brand-base); }
+.g-nav-label, .g-sidebar-bottom { color: var(--brand-muted); }
+.g-sidebar-bottom { border-color: var(--brand-secondary); }
+.g-sidebar nav a[aria-current=page], .g-sidebar nav a:hover { background: var(--brand-base); color: var(--brand-white); }
+.p3-card, .g-card, .g-login { background-color: var(--brand-white); }
+@media (max-width: 991px) {
+    .footer-social { width: auto; }
+    .footer-content { align-items: center; }
+}
+@media (max-width: 600px) {
+    .site-navbar .brand { gap: 8px; margin-right: 0; }
+    .site-navbar .brand-logo { width: 44px; height: 36px; }
+    .brand-name { font-size: 16px; }
+    .brand-subtitle { font-size: 10px; }
+    .site-navbar .navbar-toggler { padding: 6px 8px; }
+    .site-footer { padding: 24px 0 16px; }
+    .footer-brand { flex-direction: row; align-items: center; gap: 14px; flex-basis: 100%; }
+    .footer-brand img { width: 104px; height: auto; }
+    .footer-content .footer-brand strong { font-size: 13px; }
+    .footer-brand p { font-size: 11px; }
+    .footer-nav { flex-direction: row; flex-wrap: wrap; gap: 8px 18px; }
+    .footer-content { gap: 18px; }
+    .footer-bottom { flex-direction: row; flex-wrap: wrap; gap: 5px 16px; margin-top: 18px; padding-top: 14px; }
+}
+
+.footer-content .footer-brand strong,
+.footer-brand p,
+.footer-nav a,
+.footer-bottom,
+.footer-social a {
+    color: var(--brand-white);
+}
+
+.footer-bottom,
+.footer-social a {
+    border-color: var(--brand-secondary);
+}
+
+/* Logo do rodapé */
+.footer-brand img {
+    width: 190px;
+    height: auto;
+}
+
+/* Celular */
+@media (max-width: 600px) {
+    .footer-brand img {
+        width: 125px;
+        height: auto;
+    }
+}

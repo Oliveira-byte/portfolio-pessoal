@@ -1,0 +1,102 @@
+/* Navegação sempre visível; não depende de JavaScript ou de collapse. */
+.site-navbar.navbar-sempre-visivel {
+    padding: 14px 0;
+    background: var(--brand-white, #fff);
+}
+.navbar-sempre-visivel > .container {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 24px;
+}
+.navbar-sempre-visivel .brand { margin: 0; min-width: 0; }
+.navbar-sempre-visivel .np-acoes { display: contents; }
+.navbar-sempre-visivel .np-links {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0 4px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.navbar-sempre-visivel .nav-link {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    min-height: 44px;
+    padding: 10px 8px;
+    white-space: nowrap;
+    transition: color 180ms ease;
+}
+.navbar-sempre-visivel .nav-link::after {
+    content: '';
+    position: absolute;
+    inset: auto 8px 5px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--brand-base, #032e53);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 200ms ease;
+}
+.navbar-sempre-visivel .nav-link[aria-current="page"] { text-decoration: none; }
+.navbar-sempre-visivel .nav-link[aria-current="page"]::after,
+.navbar-sempre-visivel .nav-link:focus-visible::after { transform: scaleX(1); }
+.navbar-sempre-visivel .btn-client-area {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    white-space: nowrap;
+    transition: transform 180ms ease, background-color 180ms ease;
+}
+.navbar-sempre-visivel .btn-client-area span {
+    display: inline-block;
+    transition: transform 180ms ease;
+}
+@media (hover: hover) and (pointer: fine) {
+    .navbar-sempre-visivel .nav-link:hover::after { transform: scaleX(1); }
+    .navbar-sempre-visivel .btn-client-area:hover { transform: translateY(-2px); }
+    .navbar-sempre-visivel .btn-client-area:hover span { transform: translateX(3px); }
+}
+.navbar-sempre-visivel .btn-client-area:active { transform: translateY(1px); }
+@media (max-width: 1050px) {
+    .navbar-sempre-visivel > .container { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+    .navbar-sempre-visivel .brand { justify-self: center; }
+    .navbar-sempre-visivel .np-acoes {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 8px 20px;
+        min-width: 0;
+    }
+}
+@media (max-width: 600px) {
+    .site-navbar.navbar-sempre-visivel { padding: 12px 0; }
+    .navbar-sempre-visivel .np-acoes {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 4px 6px;
+        width: 100%;
+    }
+    .navbar-sempre-visivel .np-links { display: contents; }
+    .navbar-sempre-visivel .nav-item { min-width: 0; }
+    .navbar-sempre-visivel .nav-link { width: 100%; font-size: 13px; padding-inline: 4px; }
+    .navbar-sempre-visivel .nav-link::after { left: 12px; right: 12px; }
+    .navbar-sempre-visivel .btn-client-area {
+        min-width: 0;
+        padding: 8px 4px;
+        font-size: 11px;
+        gap: 4px;
+        border-radius: 9px;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .navbar-sempre-visivel *, .navbar-sempre-visivel *::after { transition: none !important; }
+}

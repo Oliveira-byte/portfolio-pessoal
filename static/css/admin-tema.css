@@ -1,0 +1,61 @@
+/* Django admin avançado, com as mesmas cores da área de gestão. */
+:root, html[data-theme="light"] {
+    --primary: var(--brand-base);
+    --secondary: var(--brand-base);
+    --accent: var(--brand-white);
+    --primary-fg: var(--brand-white);
+    --body-fg: var(--brand-base);
+    --body-bg: var(--brand-background);
+    --body-quiet-color: var(--brand-muted);
+    --body-medium-color: var(--brand-text);
+    --body-loud-color: var(--brand-base);
+    --header-color: var(--brand-white);
+    --header-branding-color: var(--brand-white);
+    --header-bg: var(--brand-base);
+    --header-link-color: var(--brand-white);
+    --breadcrumbs-fg: var(--brand-base);
+    --breadcrumbs-link-fg: var(--brand-base);
+    --breadcrumbs-bg: var(--brand-soft);
+    --link-fg: var(--brand-base);
+    --link-hover-color: var(--brand-text);
+    --link-selected-fg: var(--brand-base);
+    --hairline-color: var(--brand-line);
+    --border-color: var(--brand-secondary);
+    --error-fg: var(--brand-base);
+    --message-success-bg: var(--brand-soft);
+    --message-warning-bg: var(--brand-surface);
+    --message-error-bg: var(--brand-white);
+    --darkened-bg: var(--brand-surface);
+    --selected-bg: var(--brand-soft);
+    --selected-row: var(--brand-soft);
+    --button-fg: var(--brand-white);
+    --button-bg: var(--brand-base);
+    --button-hover-bg: var(--brand-text);
+    --default-button-bg: var(--brand-base);
+    --default-button-hover-bg: var(--brand-text);
+    --close-button-bg: var(--brand-text);
+    --close-button-hover-bg: var(--brand-base);
+    --delete-button-bg: var(--brand-base);
+    --delete-button-hover-bg: var(--brand-text);
+    --object-tools-fg: var(--brand-white);
+    --object-tools-bg: var(--brand-base);
+    --object-tools-hover-bg: var(--brand-text);
+}
+#header { background: var(--header-bg); }
+body { background: var(--body-bg); }
+.module { background: var(--brand-white); }
+html[data-theme="dark"] {
+    --body-bg: var(--brand-base);
+    --body-fg: var(--brand-white);
+    --body-quiet-color: var(--brand-soft);
+    --body-medium-color: var(--brand-soft);
+    --body-loud-color: var(--brand-white);
+    --link-fg: var(--brand-white);
+    --link-hover-color: var(--brand-soft);
+    --link-selected-fg: var(--brand-white);
+    --darkened-bg: var(--brand-text);
+    --selected-bg: var(--brand-muted);
+    --selected-row: var(--brand-muted);
+    --error-fg: var(--brand-white);
+}
+html[data-theme="dark"] .module { background: var(--brand-text); }

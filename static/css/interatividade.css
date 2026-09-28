@@ -1,0 +1,52 @@
+/* Interações públicas: conteúdo sempre disponível, mesmo sem animação. */
+html { scrollbar-gutter: stable; }
+.brand-logo { width: 64px; height: 48px; }
+.footer-brand > a { padding: 14px; }
+.footer-brand img { width: 200px; height: auto; }
+.p11-background {
+    aspect-ratio: 16 / 9;
+    background: var(--brand-base) url('../img/brand/background-1200.webp') center / contain no-repeat;
+}
+:is(.btn, .p3-button, .ps-opcao, .ps-copiar, .ps-fechar, .navbar-toggler, .footer-social a) {
+    transition: transform 180ms ease, background-color 180ms ease, color 180ms ease,
+                border-color 180ms ease, box-shadow 180ms ease;
+}
+:is(.btn, .p3-button, .ps-opcao, .p11-service-call a) > span[aria-hidden] {
+    display: inline-block;
+    transition: transform 180ms ease;
+}
+:is(.btn, .p3-button, .ps-opcao, .ps-copiar, .ps-fechar):active:not(:disabled) {
+    transform: translateY(1px) scale(.99);
+}
+.site-navbar .nav-link { position: relative; }
+.site-navbar .nav-link[aria-current="page"] { text-decoration: none; }
+.site-navbar .nav-link::after {
+    content: ''; position: absolute; inset: auto 8px 5px; height: 2px;
+    background: var(--color-primary); border-radius: 2px;
+    transform: scaleX(0); transform-origin: left; transition: transform 200ms ease;
+}
+.site-navbar .nav-link.active::after,
+.site-navbar .nav-link:focus-visible::after { transform: scaleX(1); }
+.site-navbar .collapsing { transition: height 250ms ease; }
+.p4-project-card { transition: transform 220ms ease, box-shadow 220ms ease; }
+@media (hover: hover) and (pointer: fine) {
+    :is(.btn, .p3-button, .ps-copiar, .footer-social a):hover:not(:disabled) { transform: translateY(-2px); }
+    :is(.btn, .p3-button, .ps-opcao, .p11-service-call a):hover > span[aria-hidden]:not(.ps-seta) { transform: translateX(3px); }
+    .site-navbar .nav-link:hover::after { transform: scaleX(1); }
+    .p4-project-card:hover { transform: translateY(-4px); box-shadow: 0 14px 32px rgba(3, 46, 83, 0.0784); }
+}
+@keyframes entrada-suave { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: no-preference) {
+    .p11-intro { animation: entrada-suave 300ms ease both; }
+    .p11-identity { animation: entrada-suave 300ms 70ms ease both; }
+}
+@media (max-width: 600px) {
+    .brand-logo { width: 54px; height: 40px; }
+    .footer-brand { flex-direction: column; }
+    .footer-brand img { width: 190px; height: auto; }
+    .p11-background { background-image: url('../img/brand/background-640.webp'); }
+}
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+}

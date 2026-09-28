@@ -6,8 +6,8 @@
 .p4-project-card .p3-project-cover{min-height:300px}
 .p4-project-link{border-top:1px solid var(--p3-line);padding-top:20px;margin-top:auto}
 .p4-badges{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-.p4-featured{font-size:11px;letter-spacing:.03em;color:#254d70;background:#edf2f6;border-radius:6px;padding:4px 8px;font-weight:600}
-.p4-cover-photo{background:#e7edf3;aspect-ratio:12/7;overflow:hidden}
+.p4-featured{font-size:11px;letter-spacing:.03em;color:var(--brand-text);background:var(--brand-surface);border-radius:6px;padding:4px 8px;font-weight:600}
+.p4-cover-photo{background:var(--brand-soft);aspect-ratio:12/7;overflow:hidden}
 .p4-cover-photo img{display:block;width:100%;height:100%;object-fit:cover}
 .p4-empty{padding:50px;max-width:800px}
 .p4-empty p{max-width:600px}
@@ -31,6 +31,6 @@
 .p4-facts dt{font-size:12px;color:var(--p3-muted);font-weight:400;margin-top:20px}
 .p4-facts dd{font-size:15px;color:var(--p3-ink);font-weight:600;margin:4px 0 0;overflow-wrap:anywhere}
 .p4-external-links{display:grid;gap:10px;border-top:1px solid var(--p3-line);padding-top:24px;margin-top:28px}
-.p4-button-outline{border:1px solid var(--p3-line);color:var(--p3-blue);background:#fff}
+.p4-button-outline{border:1px solid var(--p3-line);color:var(--p3-blue);background:var(--brand-white)}
 @media(max-width:900px){.p4-detail-layout{gap:30px}.p4-detail-cover .p3-portfolio-mark{gap:30px}.p4-facts{padding:24px}}
 @media(max-width:700px){.p4-detail-layout{grid-template-columns:1fr}.p4-facts{order:-1}.p4-detail-cover{margin-bottom:35px}.p4-detail-cover .p3-project-cover{padding:25px;min-height:300px}.p4-detail-cover .p3-atlas-mark strong{font-size:50px}.p4-detail-cover .p4-cover-photo{aspect-ratio:12/7}.p4-detail-cover .p3-portfolio-mark{gap:20px}.p4-empty{padding:28px}.p4-prose{font-size:16px}}

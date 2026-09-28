@@ -1,9 +1,9 @@
 {% load static %}
-<nav class="navbar navbar-expand-xl navbar-light site-navbar" aria-label="Navegação principal">
+<link rel="stylesheet" href="{% static 'css/navbar-visivel.css' %}">
+<nav class="navbar navbar-light site-navbar navbar-sempre-visivel" aria-label="Navegação principal">
     <div class="container">
-        <a class="navbar-brand brand" href="{% url 'core:home' %}"><img class="brand-logo" src="{% static 'img/brand/monograma.webp' %}" alt="" width="48" height="48"><span>Danilo Oliveira</span></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Abrir ou fechar menu"><span class="navbar-toggler-icon"></span></button>
-        <div class="collapse navbar-collapse" id="mainNavbar"><ul class="navbar-nav mx-auto"><li class="nav-item"><a class="nav-link{% if request.resolver_match.view_name == "core:home" %} active{% endif %}" href="{% url 'core:home' %}" {% if request.resolver_match.view_name == "core:home" %}aria-current="page"{% endif %}>Início</a></li>
+        <a class="navbar-brand brand" href="{% url 'core:home' %}"><img class="brand-logo" src="{% static 'img/brand/logo-simples.webp' %}" alt="" width="64" height="48"><span class="brand-copy"><span class="brand-name">Danilo Oliveira</span><small class="brand-subtitle">Software e Manutenção Técnica</small></span></a>
+        <div class="np-acoes"><ul class="navbar-nav np-links"><li class="nav-item"><a class="nav-link{% if request.resolver_match.view_name == "core:home" %} active{% endif %}" href="{% url 'core:home' %}" {% if request.resolver_match.view_name == "core:home" %}aria-current="page"{% endif %}>Início</a></li>
 <li class="nav-item"><a class="nav-link{% if request.resolver_match.view_name == 'core:servicos' %} active{% endif %}" href="{% url 'core:servicos' %}" {% if request.resolver_match.view_name == 'core:servicos' %}aria-current="page"{% endif %}>Serviços</a></li>
 <li class="nav-item"><a class="nav-link{% if request.resolver_match.view_name == "core:sobre" %} active{% endif %}" href="{% url 'core:sobre' %}" {% if request.resolver_match.view_name == "core:sobre" %}aria-current="page"{% endif %}>Sobre</a></li>
 <li class="nav-item"><a class="nav-link{% if request.resolver_match.namespace == "portfolio" %} active{% endif %}" href="{% url 'portfolio:projetos' %}" {% if request.resolver_match.namespace == "portfolio" %}aria-current="page"{% endif %}>Projetos</a></li>
